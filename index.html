@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gauntlet Tiers - Competitive PvP Rankings</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>GAUNTLET TIERS</span>
+            </a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="pages/tierlist.html" class="nav-link">Tier List</a></li>
+                <li><a href="pages/community.html" class="nav-link">Community</a></li>
+                <li><a href="pages/support.html" class="nav-link">Support</a></li>
+            </ul>
+            <div class="nav-user" id="navUser">
+                <span class="nav-username" id="navUsername"></span>
+                <a href="pages/admin.html" class="btn btn-admin hidden" id="navAdmin">Admin</a>
+                <a href="pages/profile.html" class="btn btn-secondary btn-nav">Profile</a>
+                <button class="btn btn-nav" onclick="logout()" style="background: transparent; border: 1px solid var(--border);">Logout</button>
+            </div>
+            <div class="nav-user" id="navGuest">
+                <a href="pages/login.html" class="btn btn-primary btn-nav">Login</a>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">EST. 2024</div>
+            <h1 class="hero-title">
+                COMPETITIVE<br>
+                <span class="highlight">PVP RANKINGS</span>
+            </h1>
+            <p class="hero-desc">
+                The most accurate tier list system for Minecraft PvP. 
+                Ranked by competitive players, for competitive players.
+            </p>
+            <div class="hero-btns">
+                <a href="pages/tierlist.html" class="btn btn-primary">View Rankings</a>
+                <a href="https://discord.gg/GcqFCAnBjm" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-discord"></i> Join Discord
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-num" id="playerCount">0</span>
+                    <span class="stat-label">Ranked Players</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num" data-target="89">0</span>
+                    <span class="stat-label">Tournaments</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num" data-target="6">0</span>
+                    <span class="stat-label">Game Modes</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Gauntlet Tiers?</h2>
+                <p>The most trusted PvP ranking system</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Accurate Rankings</h3>
+                    <p>Our HT1-LT5 system provides precise skill differentiation based on tournament results.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Active Community</h3>
+                    <p>Join thousands of competitive players in our Discord server.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Multiple Modes</h3>
+                    <p>Rankings for Sword, Axe, UHC, Pot, Crystal, and SMP PvP.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Weekly Updates</h3>
+                    <p>Tier lists updated every week based on competitive performance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-box">
+                <h2>Ready to prove your skill?</h2>
+                <p>Join our Discord to participate in ranked tournaments and get placed on the tier list.</p>
+                <a href="https://discord.gg/GcqFCAnBjm" target="_blank" class="btn btn-primary btn-large">
+                    <i class="fab fa-discord"></i>
+                    Join Discord
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <a href="index.html" class="footer-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>GAUNTLET TIERS</span>
+                </a>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="pages/tierlist.html">Rankings</a>
+                    <a href="pages/community.html">Community</a>
+                    <a href="pages/support.html">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>

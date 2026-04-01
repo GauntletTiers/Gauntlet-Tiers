@@ -1,0 +1,38 @@
+/* css/auth.css */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: 
+        radial-gradient(ellipse at 50% 0%, rgba(255, 51, 51, 0.1) 0%, transparent 50%),
+        var(--bg);
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-family: var(--font-main);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    color: var(--text);
+}
+
+.auth-logo i {
+    color: var(--accent);
+    font-size: 1.8rem;
+}
+
+.auth-logo:hover {
+    color: var(--accent);
+}

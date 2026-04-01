@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - Gauntlet Tiers</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .community-container {
+            padding: 100px 20px 60px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .community-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .community-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .community-header p {
+            color: var(--text-dim);
+        }
+        
+        .community-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .community-card {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .community-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+        
+        .community-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 51, 51, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: var(--accent);
+        }
+        
+        .community-card.discord .community-icon {
+            background: rgba(88, 101, 242, 0.1);
+            color: #5865F2;
+        }
+        
+        .community-card.youtube .community-icon {
+            background: rgba(255, 0, 0, 0.1);
+            color: #FF0000;
+        }
+        
+        .community-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .community-card p {
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        .about-section {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+        }
+        
+        .about-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .about-section p {
+            color: var(--text-dim);
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>GAUNTLET TIERS</span>
+            </a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="tierlist.html" class="nav-link">Tier List</a></li>
+                <li><a href="community.html" class="nav-link active">Community</a></li>
+                <li><a href="support.html" class="nav-link">Support</a></li>
+            </ul>
+            <div class="nav-user" id="navUser">
+                <span class="nav-username" id="navUsername"></span>
+                <a href="admin.html" class="btn btn-admin hidden" id="navAdmin">Admin</a>
+                <a href="profile.html" class="btn btn-secondary btn-nav">Profile</a>
+                <button class="btn btn-nav" onclick="logout()" style="background: transparent; border: 1px solid var(--border);">Logout</button>
+            </div>
+            <div class="nav-user" id="navGuest">
+                <a href="login.html" class="btn btn-primary btn-nav">Login</a>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="community-container">
+        <div class="community-header">
+            <h1>Join Our Community</h1>
+            <p>Connect with competitive PvP players worldwide</p>
+        </div>
+        
+        <div class="community-links">
+            <div class="community-card discord">
+                <div class="community-icon">
+                    <i class="fab fa-discord"></i>
+                </div>
+                <h3>Discord Server</h3>
+                <p>Join our active Discord community to find tournaments, get ranked, and chat with other players.</p>
+                <a href="https://discord.gg/GcqFCAnBjm" target="_blank" class="btn btn-primary">
+                    <i class="fab fa-discord"></i> Join Discord
+                </a>
+            </div>
+            
+            <div class="community-card youtube">
+                <div class="community-icon">
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <h3>YouTube Channel</h3>
+                <p>Watch tournament highlights, tier list updates, and PvP tutorials on our official channel.</p>
+                <a href="https://www.youtube.com/channel/UChjwpR7k21YanJCuNp6X8vA" target="_blank" class="btn btn-primary" style="background: #FF0000;">
+                    <i class="fab fa-youtube"></i> Subscribe
+                </a>
+            </div>
+        </div>
+        
+        <div class="about-section">
+            <h2>About Gauntlet Tiers</h2>
+            <p>Gauntlet Tiers is a community-driven ranking system for Minecraft PvP players. We host regular tournaments across multiple game modes including Sword, Axe, UHC, Pot, Crystal, and SMP PvP.</p>
+            <p>Our ranking system uses a 10-tier structure from HT1 (highest) to LT5 (entry level), giving players clear goals to work towards and accurate skill representation.</p>
+            <p>Whether you're a seasoned competitive player or just starting out, our community welcomes everyone. Join our Discord to participate in ranked matches and climb the tiers!</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <a href="../index.html" class="footer-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>GAUNTLET TIERS</span>
+                </a>
+                <div class="footer-links">
+                    <a href="../index.html">Home</a>
+                    <a href="tierlist.html">Rankings</a>
+                    <a href="community.html">Community</a>
+                    <a href="support.html">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/auth.js"></script>
+</body>
+</html>

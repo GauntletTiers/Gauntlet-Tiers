@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Gauntlet Tiers</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .support-container {
+            padding: 100px 20px 60px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .support-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .support-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .support-header p {
+            color: var(--text-dim);
+        }
+        
+        .faq-section {
+            margin-bottom: 50px;
+        }
+        
+        .faq-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+        }
+        
+        .faq-item {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .faq-question:hover {
+            background: var(--bg-3);
+        }
+        
+        .faq-answer {
+            padding: 0 20px 20px;
+            color: var(--text-dim);
+            display: none;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .contact-section {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .contact-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .contact-section p {
+            color: var(--text-dim);
+            margin-bottom: 25px;
+        }
+        
+        .contact-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: var(--font-main);
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>GAUNTLET TIERS</span>
+            </a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="tierlist.html" class="nav-link">Tier List</a></li>
+                <li><a href="community.html" class="nav-link">Community</a></li>
+                <li><a href="support.html" class="nav-link active">Support</a></li>
+            </ul>
+            <div class="nav-user" id="navUser">
+                <span class="nav-username" id="navUsername"></span>
+                <a href="admin.html" class="btn btn-admin hidden" id="navAdmin">Admin</a>
+                <a href="profile.html" class="btn btn-secondary btn-nav">Profile</a>
+                <button class="btn btn-nav" onclick="logout()" style="background: transparent; border: 1px solid var(--border);">Logout</button>
+            </div>
+            <div class="nav-user" id="navGuest">
+                <a href="login.html" class="btn btn-primary btn-nav">Login</a>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="support-container">
+        <div class="support-header">
+            <h1>Support Center</h1>
+            <p>Frequently asked questions and contact information</p>
+        </div>
+        
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I get ranked?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    To get ranked, join our Discord server and participate in ranked tournaments. Our staff will evaluate your performance and assign you a tier based on your results.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What do HT and LT mean?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    HT stands for "High Tier" and LT stands for "Low Tier". Each tier number (1-5) has a high and low subdivision. HT1 is the highest possible rank, while LT5 is the entry level.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Can I improve my tier?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes! Tiers are updated weekly based on tournament performance. Win matches consistently to climb the rankings. You can also request a tier review if you believe your current tier doesn't reflect your skill.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Which game modes are ranked?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    We currently rank players in six game modes: Sword, Axe, UHC, Pot, Crystal, and SMP PvP. You can have different tiers in different modes.
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact-section">
+            <h2>Need More Help?</h2>
+            <p>For tier disputes, bug reports, or other inquiries, contact our support team:</p>
+            <div class="contact-email">
+                <i class="fas fa-envelope"></i>
+                support.gauntlettiers@gmail.com
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <a href="../index.html" class="footer-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>GAUNTLET TIERS</span>
+                </a>
+                <div class="footer-links">
+                    <a href="../index.html">Home</a>
+                    <a href="tierlist.html">Rankings</a>
+                    <a href="community.html">Community</a>
+                    <a href="support.html">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        // FAQ toggle
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', function() {
+                this.parentElement.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
