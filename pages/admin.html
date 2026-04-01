@@ -191,6 +191,17 @@
             margin-bottom: 25px;
         }
         
+        .debug-info {
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        
         @media (max-width: 768px) {
             .admin-grid {
                 grid-template-columns: 1fr;
@@ -259,20 +270,64 @@
 
     <script src="../js/auth.js"></script>
     <script>
-        const currentUser = getCurrentUser();
-        const container = document.getElementById('adminContent');
+        // Verificação de admin mais rigorosa
+        function checkAdminAccess() {
+            const currentUser = getCurrentUser();
+            const container = document.getElementById('adminContent');
+            
+            console.log('=== CHECK ADMIN ACCESS ===');
+            console.log('currentUser:', currentUser);
+            
+            // Se não estiver logado
+            if (!currentUser) {
+                renderAccessDenied(container, 'Not logged in', 'Please login to access this page.');
+                return false;
+            }
+            
+            // Verifica se é admin (múltiplas formas)
+            const isUserAdmin = currentUser.isAdmin === true || 
+                               currentUser.email?.toLowerCase() === 'support.gauntlettiers@gmail.com'.toLowerCase();
+            
+            console.log('isUserAdmin:', isUserAdmin);
+            console.log('Email comparado:', currentUser.email?.toLowerCase());
+            
+            if (!isUserAdmin) {
+                renderAccessDenied(container, 'Access Denied', 'You do not have admin privileges.', currentUser);
+                return false;
+            }
+            
+            // Renderiza painel admin
+            renderAdminPanel(container);
+            return true;
+        }
         
-        // Verifica se é admin
-        if (!currentUser || !isAdmin(currentUser.email)) {
+        function renderAccessDenied(container, title, message, userInfo = null) {
+            let debugHtml = '';
+            if (userInfo) {
+                debugHtml = `
+                    <div class="debug-info">
+                        <strong>Debug Info:</strong><br>
+                        Logged in as: ${userInfo.email}<br>
+                        isAdmin flag: ${userInfo.isAdmin}<br>
+                        Expected: support.gauntlettiers@gmail.com
+                    </div>
+                `;
+            }
+            
             container.innerHTML = `
                 <div class="access-denied">
                     <i class="fas fa-lock"></i>
-                    <h2>Access Denied</h2>
-                    <p>You don't have permission to access this page.</p>
-                    <a href="../index.html" class="btn btn-primary">Go Home</a>
+                    <h2>${title}</h2>
+                    <p>${message}</p>
+                    <a href="${userInfo ? '../index.html' : 'login.html'}" class="btn btn-primary">
+                        ${userInfo ? 'Go Home' : 'Login'}
+                    </a>
+                    ${debugHtml}
                 </div>
             `;
-        } else {
+        }
+        
+        function renderAdminPanel(container) {
             container.innerHTML = `
                 <div class="admin-container">
                     <div class="admin-header">
@@ -284,9 +339,15 @@
                         <div class="admin-sidebar">
                             <h3>Menu</h3>
                             <ul class="admin-nav">
-                                <li><a href="#" class="active" onclick="showSection('add-player')"><i class="fas fa-user-plus"></i> Add Player</a></li>
-                                <li><a href="#" onclick="showSection('manage-players')"><i class="fas fa-users"></i> Manage Players</a></li>
-                                <li><a href="#" onclick="showSection('stats')"><i class="fas fa-chart-line"></i> Statistics</a></li>
+                                <li><a href="#" class="active" onclick="showSection('add-player'); return false;">
+                                    <i class="fas fa-user-plus"></i> Add Player
+                                </a></li>
+                                <li><a href="#" onclick="showSection('manage-players'); return false;">
+                                    <i class="fas fa-users"></i> Manage Players
+                                </a></li>
+                                <li><a href="#" onclick="showSection('stats'); return false;">
+                                    <i class="fas fa-chart-line"></i> Statistics
+                                </a></li>
                             </ul>
                         </div>
                         
@@ -296,13 +357,13 @@
                                 <h2>Add New Player to Rankings</h2>
                                 <form id="addPlayerForm">
                                     <div class="form-group">
-                                        <label>Minecraft Username</label>
+                                        <label>Minecraft Username *</label>
                                         <input type="text" id="playerUsername" placeholder="Player's username" required>
                                     </div>
                                     
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <label>Tier</label>
+                                            <label>Tier *</label>
                                             <select id="playerTier" required>
                                                 <option value="">Select Tier</option>
                                                 <option value="ht1">HT1 - High Tier 1 (Elite)</option>
@@ -365,7 +426,7 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="form-error" id="addPlayerError"></div>
+                                    <div class="form-error" id="addPlayerError" style="color: var(--accent); margin-top: 10px;"></div>
                                     
                                     <button type="submit" class="btn btn-primary" style="margin-top: 20px;">
                                         <i class="fas fa-plus"></i> Add Player
@@ -388,7 +449,7 @@
                                             </tr>
                                         </thead>
                                         <tbody id="playersTableBody">
-                                            <!-- Populated by JS -->
+                                            <tr><td colspan="5" style="text-align: center; color: var(--text-dim);">Loading...</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -397,18 +458,18 @@
                             <!-- Stats Section -->
                             <div id="stats" class="admin-section">
                                 <h2>Platform Statistics</h2>
-                                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-                                    <div class="stat-box" style="text-align: center; padding: 30px; background: var(--bg-3); border-radius: 8px;">
-                                        <div class="num" id="totalPlayers" style="font-family: var(--font-main); font-size: 2.5rem; font-weight: 700; color: var(--accent);">0</div>
-                                        <div class="label" style="color: var(--text-dim); text-transform: uppercase;">Total Players</div>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                                    <div style="text-align: center; padding: 30px; background: var(--bg-3); border-radius: 8px;">
+                                        <div id="totalPlayers" style="font-family: var(--font-main); font-size: 2.5rem; font-weight: 700; color: var(--accent);">0</div>
+                                        <div style="color: var(--text-dim); text-transform: uppercase; font-size: 0.85rem;">Total Players</div>
                                     </div>
-                                    <div class="stat-box" style="text-align: center; padding: 30px; background: var(--bg-3); border-radius: 8px;">
-                                        <div class="num" id="totalUsers" style="font-family: var(--font-main); font-size: 2.5rem; font-weight: 700; color: var(--accent);">0</div>
-                                        <div class="label" style="color: var(--text-dim); text-transform: uppercase;">Registered Users</div>
+                                    <div style="text-align: center; padding: 30px; background: var(--bg-3); border-radius: 8px;">
+                                        <div id="totalUsers" style="font-family: var(--font-main); font-size: 2.5rem; font-weight: 700; color: var(--accent);">0</div>
+                                        <div style="color: var(--text-dim); text-transform: uppercase; font-size: 0.85rem;">Registered Users</div>
                                     </div>
-                                    <div class="stat-box" style="text-align: center; padding: 30px; background: var(--bg-3); border-radius: 8px;">
-                                        <div class="num" id="ht1Count" style="font-family: var(--font-main); font-size: 2.5rem; font-weight: 700; color: var(--ht1);">0</div>
-                                        <div class="label" style="color: var(--text-dim); text-transform: uppercase;">HT1 Players</div>
+                                    <div style="text-align: center; padding: 30px; background: var(--bg-3); border-radius: 8px;">
+                                        <div id="ht1Count" style="font-family: var(--font-main); font-size: 2.5rem; font-weight: 700; color: var(--ht1);">0</div>
+                                        <div style="color: var(--text-dim); text-transform: uppercase; font-size: 0.85rem;">HT1 Players</div>
                                     </div>
                                 </div>
                             </div>
@@ -417,17 +478,59 @@
                 </div>
             `;
             
-            // Inicializa funcionalidades do admin
-            initAdmin();
+            // Inicializa eventos do formulário
+            initAdminForms();
+        }
+        
+        function initAdminForms() {
+            // Form de adicionar player
+            const form = document.getElementById('addPlayerForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('playerUsername').value;
+                    const tier = document.getElementById('playerTier').value;
+                    const email = document.getElementById('playerEmail').value;
+                    const wins = parseInt(document.getElementById('playerWins').value) || 0;
+                    const losses = parseInt(document.getElementById('playerLosses').value) || 0;
+                    
+                    const modes = [];
+                    document.querySelectorAll('.mode-checkbox:checked').forEach(cb => {
+                        modes.push(cb.value);
+                    });
+                    
+                    const result = addPlayer({
+                        username,
+                        tier,
+                        email: email || null,
+                        modes,
+                        wins,
+                        losses
+                    });
+                    
+                    const errorDiv = document.getElementById('addPlayerError');
+                    if (result.success) {
+                        alert('Player added successfully!');
+                        this.reset();
+                        if (errorDiv) errorDiv.textContent = '';
+                    } else {
+                        if (errorDiv) errorDiv.textContent = result.message;
+                    }
+                });
+            }
         }
         
         function showSection(sectionId) {
-            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            // Atualiza navegação
             document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
-            
-            document.getElementById(sectionId).classList.add('active');
             event.target.classList.add('active');
             
+            // Mostra seção
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Carrega dados se necessário
             if (sectionId === 'manage-players') {
                 renderPlayersTable();
             } else if (sectionId === 'stats') {
@@ -435,44 +538,14 @@
             }
         }
         
-        function initAdmin() {
-            // Form de adicionar player
-            document.getElementById('addPlayerForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const username = document.getElementById('playerUsername').value;
-                const tier = document.getElementById('playerTier').value;
-                const email = document.getElementById('playerEmail').value;
-                const wins = parseInt(document.getElementById('playerWins').value) || 0;
-                const losses = parseInt(document.getElementById('playerLosses').value) || 0;
-                
-                const modes = [];
-                document.querySelectorAll('.mode-checkbox:checked').forEach(cb => {
-                    modes.push(cb.value);
-                });
-                
-                const result = addPlayer({
-                    username,
-                    tier,
-                    email: email || null,
-                    modes,
-                    wins,
-                    losses
-                });
-                
-                if (result.success) {
-                    alert('Player added successfully!');
-                    this.reset();
-                    document.getElementById('addPlayerError').textContent = '';
-                } else {
-                    document.getElementById('addPlayerError').textContent = result.message;
-                }
-            });
-        }
-        
         function renderPlayersTable() {
-            const players = getPlayers();
             const tbody = document.getElementById('playersTableBody');
+            const players = getPlayers();
+            
+            if (players.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 40px;">No players found. Add some players first!</td></tr>';
+                return;
+            }
             
             tbody.innerHTML = players.map(p => {
                 const tierData = getTierData(p.tier);
@@ -480,7 +553,7 @@
                     <tr>
                         <td><strong>${p.username}</strong></td>
                         <td><span class="tier-badge ${tierData.class}">${tierData.name}</span></td>
-                        <td>${p.modes ? p.modes.map(m => m.charAt(0).toUpperCase() + m.slice(1)).join(', ') : '-'}</td>
+                        <td>${p.modes && p.modes.length ? p.modes.map(m => m.charAt(0).toUpperCase() + m.slice(1)).join(', ') : '-'}</td>
                         <td>${p.wins || 0}/${p.losses || 0}</td>
                         <td class="table-actions">
                             <button class="btn btn-small btn-edit" onclick="editPlayer('${p.username}')">
@@ -497,7 +570,7 @@
         
         function updateStats() {
             const players = getPlayers();
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const users = storageGet('users', []);
             
             document.getElementById('totalPlayers').textContent = players.length;
             document.getElementById('totalUsers').textContent = users.length;
@@ -505,12 +578,14 @@
         }
         
         function deletePlayer(username) {
-            if (confirm(`Are you sure you want to remove ${username} from the rankings?`)) {
-                const result = removePlayer(username);
-                if (result.success) {
-                    renderPlayersTable();
-                    updateStats();
-                }
+            if (!confirm(`Are you sure you want to remove ${username} from the rankings?`)) return;
+            
+            const result = removePlayer(username);
+            if (result.success) {
+                renderPlayersTable();
+                updateStats();
+            } else {
+                alert(result.message);
             }
         }
         
@@ -519,14 +594,20 @@
             const player = players.find(p => p.username === username);
             if (!player) return;
             
-            const newTier = prompt(`Current tier: ${player.tier}\nEnter new tier (ht1, lt1, ht2, lt2, ht3, lt3, ht4, lt4, ht5, lt5):`, player.tier);
+            const newTier = prompt(`Current tier: ${player.tier}\n\nEnter new tier:\nht1, lt1, ht2, lt2, ht3, lt3, ht4, lt4, ht5, lt5`, player.tier);
+            
             if (newTier && ['ht1','lt1','ht2','lt2','ht3','lt3','ht4','lt4','ht5','lt5'].includes(newTier)) {
                 player.tier = newTier;
-                localStorage.setItem('players', JSON.stringify(players));
-                renderPlayersTable
-                updateStats();
+                storageSet('players', players);
+                renderPlayersTable();
+                alert('Tier updated successfully!');
+            } else if (newTier) {
+                alert('Invalid tier!');
             }
         }
+        
+        // Inicializa quando DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', checkAdminAccess);
     </script>
 </body>
 </html>
