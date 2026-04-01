@@ -1,4 +1,4 @@
-// js/auth.js - Authentication and Player Management System
+// js/auth.js - Authentication and Player Management System (FIXED FOR HOSTING)
 
 const ADMIN_EMAIL = 'support.gauntlettiers@gmail.com';
 
@@ -16,100 +16,151 @@ const TIERS = {
     lt5: { name: 'LT5', label: 'Low Tier 5', class: 'tier-lt5', rank: 10 }
 };
 
-// Initialize localStorage data
-function initStorage() {
-    if (!localStorage.getItem('users')) {
-        localStorage.setItem('users', JSON.stringify([]));
-    }
-    if (!localStorage.getItem('players')) {
-        localStorage.setItem('players', JSON.stringify([]));
-    }
-    if (!localStorage.getItem('currentUser')) {
-        localStorage.setItem('currentUser', JSON.stringify(null));
+// ==================== STORAGE FUNCTIONS (COM FALLBACK) ====================
+
+function safeStorage() {
+    try {
+        const test = '__storage_test__';
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        return true;
+    } catch (e) {
+        console.warn('localStorage não disponível:', e);
+        return false;
     }
 }
 
-// Run initialization
+function storageSet(key, value) {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+    } catch (e) {
+        console.error('Erro ao salvar:', e);
+        return false;
+    }
+}
+
+function storageGet(key, defaultValue = null) {
+    try {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : defaultValue;
+    } catch (e) {
+        console.error('Erro ao ler:', e);
+        return defaultValue;
+    }
+}
+
+// Initialize storage com verificação
+function initStorage() {
+    if (!safeStorage()) {
+        alert('Seu navegador está bloqueando armazenamento local. O site pode não funcionar corretamente.');
+        return;
+    }
+    
+    // Inicializa apenas se não existir
+    if (storageGet('users') === null) {
+        storageSet('users', []);
+    }
+    if (storageGet('players') === null) {
+        storageSet('players', []);
+    }
+    if (storageGet('currentUser') === null) {
+        storageSet('currentUser', null);
+    }
+    
+    console.log('Storage inicializado. Usuários:', storageGet('users')?.length || 0);
+}
+
+// Run initialization imediatamente
 initStorage();
 
 // ==================== AUTH FUNCTIONS ====================
 
 function signup(username, email, password) {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const users = storageGet('users', []);
+    
+    // Normaliza email (lowercase, trim)
+    const normalizedEmail = email.toLowerCase().trim();
     
     // Check if email already exists
-    if (users.find(u => u.email === email)) {
+    if (users.find(u => u.email.toLowerCase() === normalizedEmail)) {
         return { success: false, message: 'Email already registered' };
     }
     
     // Check if username already taken
-    if (users.find(u => u.username === username)) {
+    if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
         return { success: false, message: 'Username already taken' };
     }
     
     const newUser = {
-        username,
-        email,
-        password, // In production, hash this!
+        username: username.trim(),
+        email: normalizedEmail,
+        password: password, // Em produção, hash!
         createdAt: new Date().toISOString(),
-        isAdmin: email === ADMIN_EMAIL
+        isAdmin: normalizedEmail === ADMIN_EMAIL.toLowerCase()
     };
     
     users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
+    storageSet('users', users);
     
     // Auto login after signup
-    localStorage.setItem('currentUser', JSON.stringify({
+    storageSet('currentUser', {
         username: newUser.username,
         email: newUser.email,
         isAdmin: newUser.isAdmin
-    }));
+    });
     
     updateNav();
     return { success: true, message: 'Account created successfully' };
 }
 
 function login(email, password) {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(u => u.email === email && u.password === password);
+    const users = storageGet('users', []);
+    const normalizedEmail = email.toLowerCase().trim();
+    
+    const user = users.find(u => u.email.toLowerCase() === normalizedEmail && u.password === password);
     
     if (!user) {
         return { success: false, message: 'Invalid email or password' };
     }
     
-    localStorage.setItem('currentUser', JSON.stringify({
+    storageSet('currentUser', {
         username: user.username,
         email: user.email,
         isAdmin: user.isAdmin
-    }));
+    });
     
     updateNav();
     return { success: true, message: 'Login successful' };
 }
 
 function logout() {
-    localStorage.setItem('currentUser', JSON.stringify(null));
+    storageSet('currentUser', null);
     updateNav();
-    window.location.href = '../index.html';
+    
+    // Redireciona para home considerando o path atual
+    const isInPages = window.location.pathname.includes('/pages/');
+    window.location.href = isInPages ? '../index.html' : 'index.html';
 }
 
 function getCurrentUser() {
-    return JSON.parse(localStorage.getItem('currentUser'));
+    return storageGet('currentUser');
 }
 
 function isAdmin(email) {
-    return email === ADMIN_EMAIL;
+    if (!email) return false;
+    return email.toLowerCase().trim() === ADMIN_EMAIL.toLowerCase();
 }
 
-// ==================== PLAYER MANAGEMENT FUNCTIONS ====================
+// ==================== PLAYER MANAGEMENT ====================
 
 function getPlayers() {
-    return JSON.parse(localStorage.getItem('players') || '[]');
+    return storageGet('players', []);
 }
 
 function getPlayerByEmail(email) {
     const players = getPlayers();
-    return players.find(p => p.email === email);
+    return players.find(p => p.email && p.email.toLowerCase() === email.toLowerCase());
 }
 
 function getPlayerByUsername(username) {
@@ -124,24 +175,24 @@ function getTierData(tierId) {
 function addPlayer(playerData) {
     const players = getPlayers();
     
-    // Check if player already exists
+    // Verifica duplicata
     if (players.find(p => p.username.toLowerCase() === playerData.username.toLowerCase())) {
         return { success: false, message: 'Player already exists in rankings' };
     }
     
     const newPlayer = {
-        username: playerData.username,
+        username: playerData.username.trim(),
         tier: playerData.tier,
         email: playerData.email || null,
         modes: playerData.modes || [],
-        wins: playerData.wins || 0,
-        losses: playerData.losses || 0,
+        wins: parseInt(playerData.wins) || 0,
+        losses: parseInt(playerData.losses) || 0,
         addedAt: new Date().toISOString(),
         addedBy: getCurrentUser()?.email || 'system'
     };
     
     players.push(newPlayer);
-    localStorage.setItem('players', JSON.stringify(players));
+    storageSet('players', players);
     
     return { success: true, message: 'Player added successfully' };
 }
@@ -156,7 +207,7 @@ function removePlayer(username) {
         return { success: false, message: 'Player not found' };
     }
     
-    localStorage.setItem('players', JSON.stringify(players));
+    storageSet('players', players);
     return { success: true, message: 'Player removed successfully' };
 }
 
@@ -169,7 +220,7 @@ function updatePlayer(username, updates) {
     }
     
     players[playerIndex] = { ...players[playerIndex], ...updates };
-    localStorage.setItem('players', JSON.stringify(players));
+    storageSet('players', players);
     
     return { success: true, message: 'Player updated successfully' };
 }
@@ -183,7 +234,10 @@ function updateNav() {
     const navUsername = document.getElementById('navUsername');
     const navAdmin = document.getElementById('navAdmin');
     
-    if (!navUser || !navGuest) return;
+    if (!navUser || !navGuest) {
+        console.log('Elementos de navegação não encontrados');
+        return;
+    }
     
     if (currentUser) {
         navUser.classList.remove('hidden');
@@ -191,17 +245,26 @@ function updateNav() {
         
         if (navUsername) navUsername.textContent = currentUser.username;
         
-        // Show admin button only for admin
+        // DEBUG: Mostra status no console
+        console.log('Usuário logado:', currentUser.email);
+        console.log('É admin?', currentUser.isAdmin);
+        console.log('Verificação isAdmin():', isAdmin(currentUser.email));
+        
+        // Show admin button - VERIFICAÇÃO DUPLA
         if (navAdmin) {
-            if (currentUser.isAdmin) {
+            const shouldShowAdmin = currentUser.isAdmin === true || isAdmin(currentUser.email);
+            if (shouldShowAdmin) {
                 navAdmin.classList.remove('hidden');
+                console.log('Botão admin VISÍVEL');
             } else {
                 navAdmin.classList.add('hidden');
+                console.log('Botão admin ESCONDIDO');
             }
         }
     } else {
         navUser.classList.add('hidden');
         navGuest.classList.remove('hidden');
+        console.log('Nenhum usuário logado');
     }
 }
 
@@ -212,18 +275,24 @@ function toggleMenu() {
     }
 }
 
-// Update navigation on page load
+// ==================== INIT ====================
+
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== GAUNTLET TIERS DEBUG ===');
+    console.log('URL:', window.location.href);
+    console.log('Path:', window.location.pathname);
+    console.log('localStorage disponível:', safeStorage());
+    
     updateNav();
     
-    // Update player count on home page
+    // Update player count
     const playerCountEl = document.getElementById('playerCount');
     if (playerCountEl) {
         const players = getPlayers();
         playerCountEl.textContent = players.length;
     }
     
-    // Animate stats numbers
+    // Animate stats
     const statNums = document.querySelectorAll('.stat-num[data-target]');
     statNums.forEach(stat => {
         const target = parseInt(stat.getAttribute('data-target'));
