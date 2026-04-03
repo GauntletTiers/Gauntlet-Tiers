@@ -1,4 +1,3 @@
-<!-- /pages/tierlist.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,119 +28,189 @@
             color: var(--text-dim);
         }
         
+        /* Mode Tabs - Estilo MCTiers */
         .mode-tabs {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 5px;
             margin-bottom: 40px;
             flex-wrap: wrap;
+            background: var(--bg-2);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
         }
         
         .mode-tab {
             padding: 10px 20px;
-            background: var(--bg-2);
-            border: 1px solid var(--border);
-            border-radius: 4px;
+            background: transparent;
+            border: none;
             cursor: pointer;
             font-family: var(--font-main);
             font-weight: 600;
             text-transform: uppercase;
+            font-size: 0.85rem;
+            color: var(--text-dim);
             transition: all 0.2s;
+            border-radius: 4px;
         }
         
-        .mode-tab:hover, .mode-tab.active {
+        .mode-tab:hover {
+            color: var(--text);
+            background: var(--bg-3);
+        }
+        
+        .mode-tab.active {
             background: var(--accent);
             color: #000;
-            border-color: var(--accent);
         }
         
-        .tier-section {
-            margin-bottom: 20px;
+        /* Tabela de Rankings - Estilo MCTiers */
+        .rankings-table-container {
             background: var(--bg-2);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
         }
         
-        .tier-header {
-            display: flex;
-            align-items: center;
+        .rankings-header {
+            display: grid;
+            grid-template-columns: 60px 1fr 100px 200px;
+            gap: 15px;
             padding: 15px 20px;
             background: var(--bg-3);
             border-bottom: 1px solid var(--border);
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
         }
         
-        .tier-label {
+        .rankings-list {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .ranking-item {
+            display: grid;
+            grid-template-columns: 60px 1fr 100px 200px;
+            gap: 15px;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+            transition: background 0.2s;
+        }
+        
+        .ranking-item:hover {
+            background: var(--bg-3);
+        }
+        
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+        
+        .rank-number {
             font-family: var(--font-main);
             font-weight: 700;
             font-size: 1.2rem;
-            padding: 8px 20px;
-            border-radius: 4px;
-            margin-right: 15px;
-            min-width: 80px;
+            color: var(--text-dim);
             text-align: center;
         }
         
-        .tier-count {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-        }
+        .rank-number.top-1 { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .rank-number.top-2 { color: #c0c0c0; }
+        .rank-number.top-3 { color: #cd7f32; }
         
-        .tier-players {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 20px;
-            min-height: 60px;
-        }
-        
-        .player-card {
+        .player-info {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 15px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        
-        .player-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
+            gap: 15px;
         }
         
         .player-avatar {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             background: var(--bg-3);
-            border-radius: 4px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            border: 2px solid var(--border);
         }
         
-        .player-name {
+        .player-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 2px;
             font-weight: 600;
+        }
+        
+        .player-region {
+            font-size: 0.75rem;
+            color: var(--text-dim);
             font-family: var(--font-main);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
-        .empty-tier {
-            color: var(--text-dark);
-            font-style: italic;
-            padding: 10px;
+        .region-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
+        .region-na { background: #3b82f6; color: #fff; }
+        .region-sa { background: #22c55e; color: #fff; }
+        .region-eu { background: #a855f7; color: #fff; }
+        .region-as { background: #f59e0b; color: #000; }
+        .region-au { background: #ef4444; color: #fff; }
+        
+        .tier-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .tier-badge-small {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-dim);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        /* Legend */
         .legend {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin-top: 40px;
             flex-wrap: wrap;
             padding: 20px;
             background: var(--bg-2);
             border-radius: 8px;
+            border: 1px solid var(--border);
         }
         
         .legend-item {
@@ -155,7 +224,24 @@
             border-radius: 4px;
             font-family: var(--font-main);
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .rankings-header,
+            .ranking-item {
+                grid-template-columns: 40px 1fr 80px;
+            }
+            
+            .tier-display {
+                display: none;
+            }
+            
+            .mode-tab {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -197,7 +283,7 @@
         </div>
         
         <div class="mode-tabs">
-            <div class="mode-tab active" data-mode="all">All Modes</div>
+            <div class="mode-tab active" data-mode="all">Overall</div>
             <div class="mode-tab" data-mode="sword">Sword</div>
             <div class="mode-tab" data-mode="axe">Axe</div>
             <div class="mode-tab" data-mode="uhc">UHC</div>
@@ -206,8 +292,16 @@
             <div class="mode-tab" data-mode="smp">SMP</div>
         </div>
         
-        <div id="tierList">
-            <!-- Dynamically populated -->
+        <div class="rankings-table-container">
+            <div class="rankings-header">
+                <div>#</div>
+                <div>Player</div>
+                <div>Region</div>
+                <div>Tier</div>
+            </div>
+            <div class="rankings-list" id="rankingsList">
+                <!-- Dynamically populated -->
+            </div>
         </div>
         
         <div class="legend">
@@ -274,56 +368,89 @@
 
     <script src="../js/auth.js"></script>
     <script>
-        const tiers = [
-            { id: 'ht1', name: 'HT1', label: 'High Tier 1', class: 'tier-ht1' },
-            { id: 'lt1', name: 'LT1', label: 'Low Tier 1', class: 'tier-lt1' },
-            { id: 'ht2', name: 'HT2', label: 'High Tier 2', class: 'tier-ht2' },
-            { id: 'lt2', name: 'LT2', label: 'Low Tier 2', class: 'tier-lt2' },
-            { id: 'ht3', name: 'HT3', label: 'High Tier 3', class: 'tier-ht3' },
-            { id: 'lt3', name: 'LT3', label: 'Low Tier 3', class: 'tier-lt3' },
-            { id: 'ht4', name: 'HT4', label: 'High Tier 4', class: 'tier-ht4' },
-            { id: 'lt4', name: 'LT4', label: 'Low Tier 4', class: 'tier-lt4' },
-            { id: 'ht5', name: 'HT5', label: 'High Tier 5', class: 'tier-ht5' },
-            { id: 'lt5', name: 'LT5', label: 'Low Tier 5', class: 'tier-lt5' }
-        ];
+        const regions = {
+            na: { name: 'NA', label: 'North America', class: 'region-na' },
+            sa: { name: 'SA', label: 'South America', class: 'region-sa' },
+            eu: { name: 'EU', label: 'Europe', class: 'region-eu' },
+            as: { name: 'AS', label: 'Asia', class: 'region-as' },
+            au: { name: 'AU', label: 'Oceania', class: 'region-au' }
+        };
         
         let currentMode = 'all';
         
-        function renderTierList() {
-            const container = document.getElementById('tierList');
-            const players = getPlayers();
-            container.innerHTML = '';
+        function getSortedPlayers() {
+            let players = getPlayers();
             
-            tiers.forEach(tier => {
-                let tierPlayers = players.filter(p => p.tier === tier.id);
-                
-                if (currentMode !== 'all') {
-                    tierPlayers = tierPlayers.filter(p => p.modes && p.modes.includes(currentMode));
-                }
-                
-                const section = document.createElement('div');
-                section.className = 'tier-section';
-                
-                section.innerHTML = `
-                    <div class="tier-header">
-                        <span class="tier-label ${tier.class}">${tier.name}</span>
-                        <span class="tier-count">${tierPlayers.length} players</span>
-                    </div>
-                    <div class="tier-players">
-                        ${tierPlayers.length > 0 
-                            ? tierPlayers.map(p => `
-                                <div class="player-card">
-                                    <div class="player-avatar"><i class="fas fa-user"></i></div>
-                                    <span class="player-name">${p.username}</span>
-                                </div>
-                            `).join('')
-                            : '<span class="empty-tier">No players in this tier</span>'
-                        }
+            // Filter by mode if not "all"
+            if (currentMode !== 'all') {
+                players = players.filter(p => p.modes && p.modes.includes(currentMode));
+            }
+            
+            // Sort by tier rank (HT1 = 1, LT1 = 2, etc.)
+            const tierOrder = ['ht1', 'lt1', 'ht2', 'lt2', 'ht3', 'lt3', 'ht4', 'lt4', 'ht5', 'lt5'];
+            
+            return players.sort((a, b) => {
+                const rankA = tierOrder.indexOf(a.tier);
+                const rankB = tierOrder.indexOf(b.tier);
+                return rankA - rankB;
+            });
+        }
+        
+        function renderRankings() {
+            const container = document.getElementById('rankingsList');
+            const players = getSortedPlayers();
+            
+            if (players.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-users-slash"></i>
+                        <p>No players ranked yet${currentMode !== 'all' ? ' in this mode' : ''}.</p>
                     </div>
                 `;
+                return;
+            }
+            
+            container.innerHTML = players.map((player, index) => {
+                const rank = index + 1;
+                const tierData = getTierData(player.tier);
+                const regionData = regions[player.region] || { name: '??', class: '' };
                 
-                container.appendChild(section);
-            });
+                // Para modo "all", mostra todos os tiers do jogador
+                let tierDisplay = '';
+                if (currentMode === 'all') {
+                    // Mostra o tier principal e indica quantos modos
+                    tierDisplay = `<span class="tier-badge-small ${tierData.class}">${tierData.name}</span>`;
+                    if (player.modes && player.modes.length > 0) {
+                        tierDisplay += `<span style="color: var(--text-dim); font-size: 0.75rem; margin-left: 5px;">(${player.modes.length} modes)</span>`;
+                    }
+                } else {
+                    // Mostra apenas o tier específico do modo
+                    tierDisplay = `<span class="tier-badge-small ${tierData.class}">${tierData.name}</span>`;
+                }
+                
+                const rankClass = rank === 1 ? 'top-1' : rank === 2 ? 'top-2' : rank === 3 ? 'top-3' : '';
+                
+                return `
+                    <div class="ranking-item">
+                        <div class="rank-number ${rankClass}">${rank}</div>
+                        <div class="player-info">
+                            <div class="player-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="player-details">
+                                <h3>${player.username}</h3>
+                                <span class="player-region">${player.modes ? player.modes.map(m => m.toUpperCase()).join(', ') : 'No modes'}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="region-badge ${regionData.class}">${regionData.name}</span>
+                        </div>
+                        <div class="tier-display">
+                            ${tierDisplay}
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
         
         // Mode tabs
@@ -332,12 +459,12 @@
                 document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 currentMode = this.dataset.mode;
-                renderTierList();
+                renderRankings();
             });
         });
         
         // Initial render
-        renderTierList();
+        renderRankings();
     </script>
 </body>
 </html>
