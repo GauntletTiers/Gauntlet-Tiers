@@ -1,5 +1,3 @@
-// js/auth.js - Authentication and Player Management System (FIXED FOR HOSTING)
-
 const ADMIN_EMAIL = 'support.gauntlettiers@gmail.com';
 
 // Tier definitions
@@ -14,6 +12,15 @@ const TIERS = {
     lt4: { name: 'LT4', label: 'Low Tier 4', class: 'tier-lt4', rank: 8 },
     ht5: { name: 'HT5', label: 'High Tier 5', class: 'tier-ht5', rank: 9 },
     lt5: { name: 'LT5', label: 'Low Tier 5', class: 'tier-lt5', rank: 10 }
+};
+
+// Region definitions
+const REGIONS = {
+    na: { name: 'NA', label: 'North America', class: 'region-na' },
+    sa: { name: 'SA', label: 'South America', class: 'region-sa' },
+    eu: { name: 'EU', label: 'Europe', class: 'region-eu' },
+    as: { name: 'AS', label: 'Asia', class: 'region-as' },
+    au: { name: 'AU', label: 'Oceania', class: 'region-au' }
 };
 
 // ==================== STORAGE FUNCTIONS (COM FALLBACK) ====================
@@ -172,6 +179,10 @@ function getTierData(tierId) {
     return TIERS[tierId] || { name: 'N/A', label: 'Unranked', class: '', rank: 99 };
 }
 
+function getRegionData(regionId) {
+    return REGIONS[regionId] || { name: '??', label: 'Unknown', class: '' };
+}
+
 function addPlayer(playerData) {
     const players = getPlayers();
     
@@ -183,10 +194,9 @@ function addPlayer(playerData) {
     const newPlayer = {
         username: playerData.username.trim(),
         tier: playerData.tier,
+        region: playerData.region || 'na', // Default to NA
         email: playerData.email || null,
         modes: playerData.modes || [],
-        wins: parseInt(playerData.wins) || 0,
-        losses: parseInt(playerData.losses) || 0,
         addedAt: new Date().toISOString(),
         addedBy: getCurrentUser()?.email || 'system'
     };
@@ -296,6 +306,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const statNums = document.querySelectorAll('.stat-num[data-target]');
     statNums.forEach(stat => {
         const target = parseInt(stat.getAttribute('data-target'));
+        if (isNaN(target)) return; // Pula se não for número (ex: "SOON!")
+        
         const duration = 2000;
         const step = target / (duration / 16);
         let current = 0;
