@@ -102,30 +102,34 @@
             display: block;
         }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+        .modes-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
         }
         
-        .stat-box {
-            text-align: center;
-            padding: 20px;
+        .mode-tag {
+            padding: 6px 12px;
             background: var(--bg-3);
-            border-radius: 8px;
-        }
-        
-        .stat-box .num {
+            border: 1px solid var(--border);
+            border-radius: 4px;
             font-family: var(--font-main);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-        
-        .stat-box .label {
-            color: var(--text-dim);
+            font-weight: 600;
             font-size: 0.85rem;
             text-transform: uppercase;
+        }
+        
+        .region-display {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-3);
+            border-radius: 4px;
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 0.9rem;
         }
         
         .login-prompt {
@@ -203,6 +207,14 @@
 
     <script src="../js/auth.js"></script>
     <script>
+        const regions = {
+            na: { name: 'NA', label: 'North America', class: 'region-na' },
+            sa: { name: 'SA', label: 'South America', class: 'region-sa' },
+            eu: { name: 'EU', label: 'Europe', class: 'region-eu' },
+            as: { name: 'AS', label: 'Asia', class: 'region-as' },
+            au: { name: 'AU', label: 'Oceania', class: 'region-au' }
+        };
+        
         const currentUser = getCurrentUser();
         const container = document.getElementById('profileContent');
         
@@ -218,6 +230,7 @@
         } else {
             const player = getPlayerByEmail(currentUser.email);
             const tierData = player ? getTierData(player.tier) : null;
+            const regionData = player ? regions[player.region] : null;
             
             container.innerHTML = `
                 <div class="profile-container">
@@ -236,9 +249,28 @@
                                 <span class="tier-badge ${tierData.class}">${tierData.name}</span>
                                 <div class="tier-info">
                                     <h3>${tierData.label}</h3>
-                                    <p>Game Modes: ${player.modes ? player.modes.map(m => m.charAt(0).toUpperCase() + m.slice(1)).join(', ') : 'None assigned'}</p>
+                                    <p>Your current ranking tier</p>
                                 </div>
                             </div>
+                            
+                            ${regionData ? `
+                                <div style="margin-top: 15px;">
+                                    <strong style="color: var(--text-dim); font-size: 0.85rem; text-transform: uppercase;">Region:</strong>
+                                    <div class="region-display ${regionData.class}" style="margin-top: 5px;">
+                                        <i class="fas fa-globe"></i>
+                                        ${regionData.name} - ${regionData.label}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${player.modes && player.modes.length > 0 ? `
+                                <div style="margin-top: 20px;">
+                                    <strong style="color: var(--text-dim); font-size: 0.85rem; text-transform: uppercase;">Game Modes:</strong>
+                                    <div class="modes-list">
+                                        ${player.modes.map(m => `<span class="mode-tag">${m.charAt(0).toUpperCase() + m.slice(1)}</span>`).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
                         ` : `
                             <div class="no-tier">
                                 <i class="fas fa-question-circle"></i>
@@ -251,19 +283,21 @@
                     </div>
                     
                     <div class="profile-section">
-                        <h2><i class="fas fa-chart-bar"></i> Statistics</h2>
-                        <div class="stats-grid">
-                            <div class="stat-box">
-                                <div class="num">${player ? (player.wins || 0) : 0}</div>
-                                <div class="label">Wins</div>
+                        <h2><i class="fas fa-info-circle"></i> Account Information</h2>
+                        <div style="display: grid; gap: 15px;">
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                                <span style="color: var(--text-dim);">Username</span>
+                                <span style="font-weight: 600;">${currentUser.username}</span>
                             </div>
-                            <div class="stat-box">
-                                <div class="num">${player ? (player.losses || 0) : 0}</div>
-                                <div class="label">Losses</div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                                <span style="color: var(--text-dim);">Email</span>
+                                <span style="font-weight: 600;">${currentUser.email}</span>
                             </div>
-                            <div class="stat-box">
-                                <div class="num">${player && player.wins ? Math.round((player.wins / ((player.wins + player.losses) || 1)) * 100) : 0}%</div>
-                                <div class="label">Win Rate</div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                                <span style="color: var(--text-dim);">Account Type</span>
+                                <span style="font-weight: 600; color: ${currentUser.isAdmin ? 'var(--gold)' : 'var(--accent)'};">
+                                    ${currentUser.isAdmin ? '<i class="fas fa-crown"></i> Administrator' : 'Standard User'}
+                                </span>
                             </div>
                         </div>
                     </div>
