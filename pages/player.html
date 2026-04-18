@@ -128,7 +128,7 @@
     const skinContainer = document.getElementById('skin-container');
     skinContainer.innerHTML = `
       <img class="mc-skin-lg"
-        src="https://crafatar.com/avatars/${encodeURIComponent(username)}?size=80&overlay"
+        src="https://mineskin.eu/helm/${encodeURIComponent(username)}/80"
         alt="${esc(username)}"
         onerror="this.outerHTML='<div style=\'width:80px;height:80px;border-radius:8px;background:rgba(212,160,23,0.15);border:2px solid var(--accent-gold);display:flex;align-items:center;justify-content:center;font-family:Rajdhani,sans-serif;font-size:1.8rem;font-weight:700;color:var(--accent-gold);\'>${esc(username.slice(0,2).toUpperCase())}</div>'"
       />`;
