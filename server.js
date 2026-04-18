@@ -279,24 +279,89 @@ app.get('/api/tournaments', async (req, res) => {
   const { data, error } = await supabase
     .from('tournaments')
     .select('*')
-    .order('date', { ascending: false });
+    .order('created_at', { ascending: false });
   if (error) return res.status(500).json({ message: error.message });
   res.json({ tournaments: data });
 });
 
+// ── TOURNAMENT GET ONE ─────────────────────────────────────
+app.get('/api/tournaments/:id', async (req, res) => {
+  const { data, error } = await supabase
+    .from('tournaments')
+    .select('*')
+    .eq('id', req.params.id)
+    .single();
+  if (error) return res.status(500).json({ message: error.message });
+  res.json({ tournament: data });
+});
+
 // ── TOURNAMENTS (admin POST) ───────────────────────────────
 app.post('/api/tournaments', auth, adminOnly, async (req, res) => {
-  const { name, mode, date, max_players, status, description, players } = req.body;
+  const { name, mode, date, status, description, players } = req.body;
   if (!name) return res.status(400).json({ message: 'Name required' });
 
   const { data, error } = await supabase
     .from('tournaments')
-    .insert([{ name, mode, date, max_players, status: status || 'upcoming', description, players: players || [] }])
+    .insert([{
+      name, mode, date,
+      status: status || 'upcoming',
+      description,
+      players: players || [],
+      bracket: buildBracket(players || [])
+    }])
     .select()
     .single();
 
   if (error) return res.status(500).json({ message: error.message });
   res.json({ tournament: data });
+});
+
+// ── TOURNAMENT: ADD PLAYER ─────────────────────────────────
+app.patch('/api/tournaments/:id/players/add', auth, adminOnly, async (req, res) => {
+  const { username } = req.body;
+  if (!username) return res.status(400).json({ message: 'username required' });
+
+  const { data: t, error: fetchErr } = await supabase
+    .from('tournaments').select('players').eq('id', req.params.id).single();
+  if (fetchErr) return res.status(500).json({ message: fetchErr.message });
+
+  const players = t.players || [];
+  if (players.includes(username))
+    return res.status(409).json({ message: 'Player already in tournament' });
+
+  players.push(username);
+  const bracket = buildBracket(players);
+
+  const { error } = await supabase.from('tournaments')
+    .update({ players, bracket }).eq('id', req.params.id);
+  if (error) return res.status(500).json({ message: error.message });
+  res.json({ players, bracket });
+});
+
+// ── TOURNAMENT: REMOVE PLAYER ──────────────────────────────
+app.patch('/api/tournaments/:id/players/remove', auth, adminOnly, async (req, res) => {
+  const { username } = req.body;
+
+  const { data: t, error: fetchErr } = await supabase
+    .from('tournaments').select('players').eq('id', req.params.id).single();
+  if (fetchErr) return res.status(500).json({ message: fetchErr.message });
+
+  const players = (t.players || []).filter(p => p !== username);
+  const bracket = buildBracket(players);
+
+  const { error } = await supabase.from('tournaments')
+    .update({ players, bracket }).eq('id', req.params.id);
+  if (error) return res.status(500).json({ message: error.message });
+  res.json({ players, bracket });
+});
+
+// ── TOURNAMENT: UPDATE STATUS ──────────────────────────────
+app.patch('/api/tournaments/:id/status', auth, adminOnly, async (req, res) => {
+  const { status } = req.body;
+  const { error } = await supabase.from('tournaments')
+    .update({ status }).eq('id', req.params.id);
+  if (error) return res.status(500).json({ message: error.message });
+  res.json({ success: true });
 });
 
 // ── TOURNAMENTS (admin DELETE) ─────────────────────────────
@@ -305,6 +370,52 @@ app.delete('/api/tournaments/:id', auth, adminOnly, async (req, res) => {
   if (error) return res.status(500).json({ message: error.message });
   res.json({ success: true });
 });
+
+// ── BRACKET BUILDER ────────────────────────────────────────
+function buildBracket(players) {
+  const n = players.length;
+  if (n < 2) return [];
+
+  // Find next power of 2 >= n
+  let slots = 1;
+  while (slots < n) slots *= 2;
+
+  // Assign byes: players that skip straight to next round
+  // Fill slots with players, rest are 'BYE'
+  const seeded = [...players];
+  while (seeded.length < slots) seeded.push('BYE');
+
+  // Build rounds
+  const rounds = [];
+  let current = seeded;
+
+  while (current.length > 1) {
+    const matches = [];
+    const nextRound = [];
+
+    for (let i = 0; i < current.length; i += 2) {
+      const p1 = current[i];
+      const p2 = current[i + 1];
+
+      if (p2 === 'BYE') {
+        // p1 gets a bye — advances automatically
+        matches.push({ p1, p2: 'BYE', winner: p1, bye: true });
+        nextRound.push(p1);
+      } else if (p1 === 'BYE') {
+        matches.push({ p1: 'BYE', p2, winner: p2, bye: true });
+        nextRound.push(p2);
+      } else {
+        matches.push({ p1, p2, winner: null, bye: false });
+        nextRound.push('TBD');
+      }
+    }
+
+    rounds.push(matches);
+    current = nextRound;
+  }
+
+  return rounds;
+}
 
 // ── PLAYER TIER HISTORY (public) ───────────────────────────
 app.get('/api/players/history', async (req, res) => {
