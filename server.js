@@ -96,7 +96,7 @@ app.post('/api/auth/login', async (req, res) => {
 // ── GET PLAYERS (public) ───────────────────────────────────
 app.get('/api/players', async (req, res) => {
   const mode = req.query.mode || 'overall';
-  const MODES = ['sword','mace','axe','uhc','pot','crystal','smp'];
+  const MODES = ['sword','mace','axe','uhc','pot','crystal','smp','vanilla'];
 
   if (mode === 'overall') {
     // Fetch all modes and merge by username, keeping best tier
@@ -174,7 +174,7 @@ app.get('/api/stats', async (req, res) => {
     supabase.from('player_tiers').select('*', { count: 'exact', head: true }),
     supabase.from('users').select('*', { count: 'exact', head: true })
   ]);
-  res.json({ ranked_players: players, total_users: users, game_modes: 7 });
+  res.json({ ranked_players: players, total_users: users, game_modes: 8 });
 });
 
 // ── ADMIN: ADD PLAYER ──────────────────────────────────────

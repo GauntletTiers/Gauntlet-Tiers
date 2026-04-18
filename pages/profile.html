@@ -85,7 +85,7 @@
 <script src="../js/auth.js"></script>
 <script src="../js/api.js"></script>
 <script>
-  const MODES = ['sword','mace','axe','uhc','pot','crystal','smp'];
+  const MODES = ['sword','mace','axe','uhc','pot','crystal','smp','vanilla'];
 
   function renderProfile() {
     const user = getUser();
@@ -119,7 +119,7 @@
     const container = document.getElementById('profile-tiers');
     try {
       // Fetch all modes in parallel by username
-      const FETCH_MODES = ['sword','mace','axe','uhc','pot','crystal','smp'];
+      const FETCH_MODES = ['sword','mace','axe','uhc','pot','crystal','smp','vanilla'];
       const results = await Promise.all(
         FETCH_MODES.map(m => getPlayers(m).catch(() => ({ players: [] })))
       );
