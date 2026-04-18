@@ -10,185 +10,216 @@
 
     /* ── CREATE FORM ── */
     .create-form {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.75rem;
-      margin-bottom: 2rem;
-      display: none;
-      animation: fadeSlideUp 0.3s ease both;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.75rem; margin-bottom: 2rem;
+      display: none; animation: fadeSlideUp 0.3s ease both;
     }
     .create-form.open { display: block; }
     .create-form h3 {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 1rem; font-weight: 700;
+      font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700;
       letter-spacing: 1.5px; text-transform: uppercase;
-      margin-bottom: 1.25rem; padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
     }
     .form-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 1rem; margin-bottom: 1rem;
     }
     .form-row .form-group { margin-bottom: 0; }
 
-    /* ── FILTER BAR ── */
-    .filter-bar {
-      display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center;
-    }
+    /* ── FILTER ── */
+    .filter-bar { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
     .filter-bar span {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.72rem;
-      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--text-muted); margin-right: 0.25rem;
+      font-family: 'Rajdhani', sans-serif; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-right: 0.25rem;
     }
 
-    /* ── TOURNAMENT CARD ── */
+    /* ── CARD ── */
     .t-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 1.25rem;
-      transition: border-color 0.2s;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; transition: border-color 0.2s;
     }
-    .t-card:hover { border-color: var(--border-accent); }
+    .t-card.is-live { border-color: rgba(46,204,113,0.4); }
 
     .t-card-header {
-      padding: 1.1rem 1.5rem;
-      display: flex; align-items: center;
+      padding: 1.1rem 1.5rem; display: flex; align-items: center;
       justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
       border-bottom: 1px solid var(--border);
     }
     .t-card-header h3 {
       font-family: 'Rajdhani', sans-serif; font-size: 1.1rem;
       font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+      display: flex; align-items: center; gap: 0.75rem;
     }
     .t-card-actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
 
+    /* ── LIVE BADGE ── */
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.4);
+      border-radius: 3px; padding: 0.2rem 0.6rem;
+      font-family: 'Rajdhani', sans-serif; font-size: 0.72rem;
+      font-weight: 700; letter-spacing: 2px; color: #2ecc71;
+    }
+    .live-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #2ecc71; animation: livePulse 1.2s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    /* ── STATUS ── */
     .t-status {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.7rem;
-      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-      padding: 0.22rem 0.65rem; border-radius: 3px;
+      font-family: 'Rajdhani', sans-serif; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; padding: 0.22rem 0.65rem; border-radius: 3px;
     }
     .s-upcoming { background: rgba(52,152,219,0.12); border: 1px solid rgba(52,152,219,0.3); color: #3498db; }
     .s-ongoing  { background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; }
     .s-finished { background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-muted); }
 
+    /* ── LIVE INFO BAR ── */
+    .t-live-bar {
+      padding: 0.75rem 1.5rem; display: flex; align-items: center;
+      gap: 1.5rem; flex-wrap: wrap;
+      background: rgba(46,204,113,0.04); border-bottom: 1px solid rgba(46,204,113,0.15);
+    }
+    .t-live-item { display: flex; flex-direction: column; gap: 0.1rem; }
+    .t-live-label {
+      font-family: 'Rajdhani', sans-serif; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: rgba(46,204,113,0.6);
+    }
+    .t-live-value { font-size: 0.88rem; color: #2ecc71; font-weight: 600; }
+    .t-live-timer { font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; font-weight: 700; color: #2ecc71; }
+
+    .current-match-display {
+      font-size: 0.88rem; color: var(--text-primary); font-weight: 600;
+    }
+    .current-match-display span { color: var(--accent-gold); }
+
+    /* ── META ── */
     .t-card-meta {
-      padding: 1rem 1.5rem;
-      display: flex; gap: 2rem; flex-wrap: wrap;
+      padding: 1rem 1.5rem; display: flex; gap: 2rem; flex-wrap: wrap;
       border-bottom: 1px solid var(--border);
     }
     .t-meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
     .t-meta-label {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.68rem;
-      font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);
+      font-family: 'Rajdhani', sans-serif; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);
     }
     .t-meta-value { font-size: 0.88rem; color: var(--text-primary); font-weight: 600; }
 
-    /* ── PLAYERS PANEL ── */
-    .t-players-panel {
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .t-players-header {
-      display: flex; align-items: center;
-      justify-content: space-between; margin-bottom: 0.75rem;
-    }
+    /* ── PLAYERS ── */
+    .t-players-panel { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .t-players-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
     .t-players-title {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.72rem;
-      font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);
+      font-family: 'Rajdhani', sans-serif; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);
     }
-    .t-add-row {
-      display: flex; gap: 0.5rem; margin-bottom: 0.75rem;
-    }
+    .t-add-row { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
     .t-add-row input {
       flex: 1; background: var(--bg-secondary); border: 1px solid var(--border);
       border-radius: 4px; padding: 0.45rem 0.75rem;
       color: var(--text-primary); font-family: 'Exo 2', sans-serif; font-size: 0.85rem; outline: none;
     }
     .t-add-row input:focus { border-color: var(--accent-gold); }
-
-    .t-players-list {
-      display: flex; flex-wrap: wrap; gap: 0.4rem;
-    }
+    .t-players-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
     .t-player-chip {
       display: inline-flex; align-items: center; gap: 0.4rem;
       background: var(--bg-secondary); border: 1px solid var(--border);
-      border-radius: 4px; padding: 0.25rem 0.6rem;
-      font-size: 0.82rem; color: var(--text-primary);
+      border-radius: 4px; padding: 0.25rem 0.6rem; font-size: 0.82rem; color: var(--text-primary);
     }
-    .t-player-chip .remove-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--text-muted); font-size: 0.9rem; line-height: 1;
-      padding: 0; transition: color 0.15s;
+    .t-player-chip .rm { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 0.9rem; padding: 0; transition: color 0.15s; }
+    .t-player-chip .rm:hover { color: var(--accent-red); }
+
+    /* ── APPLY SECTION ── */
+    .t-apply-section { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .t-apply-section h4 {
+      font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--text-secondary);
+      margin-bottom: 1rem;
     }
-    .t-player-chip .remove-btn:hover { color: var(--accent-red); }
+    .apply-form-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;
+    }
+    @media (max-width: 540px) { .apply-form-grid { grid-template-columns: 1fr; } }
+    .apply-form-grid .form-group { margin-bottom: 0; }
+    .apply-success {
+      background: rgba(46,204,113,0.1); border: 1px solid rgba(46,204,113,0.3);
+      border-radius: 6px; padding: 0.75rem 1rem; font-size: 0.85rem; color: #2ecc71;
+      display: none;
+    }
+    .apply-success.show { display: block; }
+    .apply-count {
+      font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem;
+    }
+
+    /* ── APPLICATIONS ADMIN PANEL ── */
+    .t-applications-panel { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .t-applications-panel h4 {
+      font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+    }
+    .app-row {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 0.5rem; padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border); font-size: 0.85rem;
+    }
+    .app-row:last-child { border-bottom: none; }
+    .app-info { display: flex; flex-direction: column; gap: 0.1rem; }
+    .app-ign { font-weight: 600; color: var(--text-primary); }
+    .app-discord { font-size: 0.78rem; color: var(--text-muted); }
+    .app-status {
+      font-family: 'Rajdhani', sans-serif; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; padding: 0.18rem 0.55rem; border-radius: 3px;
+    }
+    .app-pending  { background: rgba(212,160,23,0.12); border: 1px solid rgba(212,160,23,0.3); color: var(--accent-gold); }
+    .app-approved { background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; }
+    .app-rejected { background: rgba(192,57,43,0.1);  border: 1px solid rgba(192,57,43,0.3);  color: #e74c3c; }
+    .app-actions { display: flex; gap: 0.4rem; }
+
+    /* ── CURRENT MATCH ADMIN ── */
+    .t-match-admin { padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; gap: 0.5rem; align-items: center; }
+    .t-match-admin input {
+      flex: 1; background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: 4px; padding: 0.4rem 0.75rem;
+      color: var(--text-primary); font-family: 'Exo 2', sans-serif; font-size: 0.85rem; outline: none;
+    }
+    .t-match-admin input:focus { border-color: rgba(46,204,113,0.5); }
 
     /* ── BRACKET ── */
-    .t-bracket-toggle-bar {
-      padding: 0.7rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
+    .t-bracket-toggle-bar { padding: 0.7rem 1.5rem; border-bottom: 1px solid var(--border); }
     .t-bracket-toggle {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.72rem;
-      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-      color: var(--text-muted); background: transparent; border: none;
-      cursor: pointer; padding: 0; transition: color 0.15s;
+      font-family: 'Rajdhani', sans-serif; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted);
+      background: transparent; border: none; cursor: pointer; padding: 0; transition: color 0.15s;
     }
     .t-bracket-toggle:hover { color: var(--accent-gold); }
-
-    .t-bracket-wrap {
-      display: none; overflow-x: auto;
-      padding: 1.25rem 1.5rem 1.5rem;
-    }
+    .t-bracket-wrap { display: none; overflow-x: auto; padding: 1.25rem 1.5rem 1.5rem; }
     .t-bracket-wrap.open { display: block; }
-
-    .t-bracket-inner {
-      display: flex; gap: 1.25rem; min-width: max-content; align-items: flex-start;
-    }
-
+    .t-bracket-inner { display: flex; gap: 1.25rem; min-width: max-content; align-items: flex-start; }
     .b-round { display: flex; flex-direction: column; min-width: 170px; }
     .b-round-label {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.68rem;
-      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--text-muted); margin-bottom: 0.6rem;
+      font-family: 'Rajdhani', sans-serif; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.6rem;
     }
     .b-matches { display: flex; flex-direction: column; gap: 0.6rem; }
-
-    .b-match {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
-    }
-    .b-match.bye-match { opacity: 0.5; }
-
+    .b-match { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .b-match.current-match { border-color: rgba(46,204,113,0.5); box-shadow: 0 0 0 1px rgba(46,204,113,0.2); }
     .b-player {
-      padding: 0.4rem 0.7rem;
-      font-size: 0.82rem;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-secondary);
+      padding: 0.4rem 0.7rem; font-size: 0.82rem; display: flex; align-items: center;
+      justify-content: space-between; border-bottom: 1px solid var(--border); color: var(--text-secondary);
     }
     .b-player:last-child { border-bottom: none; }
     .b-player.winner { color: var(--accent-gold); font-weight: 600; background: rgba(212,160,23,0.06); }
     .b-player.bye    { color: var(--text-muted); font-style: italic; font-size: 0.75rem; }
     .b-player.tbd    { color: var(--text-muted); font-style: italic; font-size: 0.78rem; }
-
-    .b-bye-label {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.6rem;
-      letter-spacing: 1px; text-transform: uppercase;
-      color: var(--accent-gold); opacity: 0.7;
-    }
+    .b-bye-label { font-family: 'Rajdhani', sans-serif; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-gold); opacity: 0.7; }
 
     /* ── EMPTY ── */
-    .t-empty {
-      text-align: center; padding: 4rem 2rem; color: var(--text-muted);
-    }
-    .t-empty strong {
-      display: block; font-family: 'Rajdhani', sans-serif;
-      font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 0.5rem;
-    }
+    .t-empty { text-align: center; padding: 4rem 2rem; color: var(--text-muted); }
+    .t-empty strong { display: block; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 0.5rem; }
   </style>
 </head>
 <body>
@@ -208,9 +239,7 @@
       <a href="profile.html" class="btn-ghost"><span class="nav-username">Profile</span></a>
       <button class="btn-danger logout-btn">Logout</button>
     </div>
-    <div class="nav-login">
-      <a href="login.html" class="btn-ghost">Login</a>
-    </div>
+    <div class="nav-login"><a href="login.html" class="btn-ghost">Login</a></div>
   </div>
 </nav>
 
@@ -221,13 +250,10 @@
   </div>
 
   <div class="t-page">
-
-    <!-- Admin bar -->
     <div id="admin-bar" style="display:none;margin-bottom:1.25rem;">
       <button class="btn-primary" id="toggle-create-btn">+ Create Tournament</button>
     </div>
 
-    <!-- Create form -->
     <div class="create-form" id="create-form">
       <h3>New Tournament</h3>
       <div class="alert error" id="create-error"></div>
@@ -239,14 +265,10 @@
         <div class="form-group">
           <label>Game Mode</label>
           <select id="t-mode">
-            <option value="sword">Sword</option>
-            <option value="mace">Mace</option>
-            <option value="axe">Axe</option>
-            <option value="uhc">UHC</option>
-            <option value="pot">Pot</option>
-            <option value="crystal">Crystal</option>
-            <option value="smp">SMP</option>
-            <option value="vanilla">Vanilla</option>
+            <option value="sword">Sword</option><option value="mace">Mace</option>
+            <option value="axe">Axe</option><option value="uhc">UHC</option>
+            <option value="pot">Pot</option><option value="crystal">Crystal</option>
+            <option value="smp">SMP</option><option value="vanilla">Vanilla</option>
           </select>
         </div>
         <div class="form-group">
@@ -272,18 +294,15 @@
       </div>
     </div>
 
-    <!-- Filter bar -->
     <div class="filter-bar">
       <span>Filter:</span>
       <button class="mode-tab active" data-filter="all">All</button>
       <button class="mode-tab" data-filter="upcoming">Upcoming</button>
-      <button class="mode-tab" data-filter="ongoing">Ongoing</button>
+      <button class="mode-tab" data-filter="ongoing">🔴 Live</button>
       <button class="mode-tab" data-filter="finished">Finished</button>
     </div>
 
-    <!-- List -->
     <div id="t-list"></div>
-
   </div>
 </main>
 
@@ -306,6 +325,7 @@
   let allTournaments = [];
   let currentFilter  = 'all';
   let isAdmin        = false;
+  let timers         = {}; // tournamentId → interval
 
   function esc(s) {
     const d = document.createElement('div');
@@ -354,30 +374,55 @@
 
   // ── Render list ────────────────────────────────────────
   function renderList() {
+    Object.values(timers).forEach(clearInterval);
+    timers = {};
+
     const list = document.getElementById('t-list');
-    let items  = allTournaments;
+    let items = allTournaments;
     if (currentFilter !== 'all') items = items.filter(t => t.status === currentFilter);
 
     if (!items.length) {
-      list.innerHTML = `<div class="t-empty"><strong>No ${currentFilter === 'all' ? '' : currentFilter + ' '}tournaments yet</strong><p>Check back soon or join our Discord.</p></div>`;
+      list.innerHTML = `<div class="t-empty"><strong>No ${currentFilter==='all'?'':currentFilter+' '}tournaments yet</strong><p>Check back soon or join our Discord.</p></div>`;
       return;
     }
     list.innerHTML = items.map((t, i) => renderCard(t, i)).join('');
+
+    // Start live timers for ongoing tournaments
+    items.filter(t => t.status === 'ongoing' && t.started_at).forEach(t => startTimer(t));
+  }
+
+  // ── Start timer for a live tournament ──────────────────
+  function startTimer(t) {
+    const el = document.getElementById(`timer-${t.id}`);
+    if (!el) return;
+    const start = new Date(t.started_at).getTime();
+    function tick() {
+      const diff = Date.now() - start;
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      el.textContent = (h > 0 ? h + 'h ' : '') + m + 'm ' + s + 's';
+    }
+    tick();
+    timers[t.id] = setInterval(tick, 1000);
   }
 
   // ── Render one card ────────────────────────────────────
   function renderCard(t, i) {
-    const statusClass = { upcoming:'s-upcoming', ongoing:'s-ongoing', finished:'s-finished' };
-    const statusLabel = { upcoming:'Upcoming', ongoing:'Ongoing', finished:'Finished' };
-    const dateStr = t.date
-      ? new Date(t.date).toLocaleDateString('en-US', { day:'numeric', month:'long', year:'numeric' })
-      : 'TBA';
-    const players = t.players || [];
-    const bracket = t.bracket || buildBracketClient(players);
-    const roundNames = getRoundNames(bracket.length);
+    const isLive    = t.status === 'ongoing';
+    const isFinished= t.status === 'finished';
+    const players   = t.players  || [];
+    const bracket   = t.bracket  || buildBracketClient(players);
+    const apps      = t.applications || [];
+    const dateStr   = t.date ? new Date(t.date).toLocaleDateString('en-US',{day:'numeric',month:'long',year:'numeric'}) : 'TBA';
+    const roundNames= getRoundNames(bracket.length);
+    const statusMap = { upcoming:'s-upcoming', ongoing:'s-ongoing', finished:'s-finished' };
+    const statusLabel={ upcoming:'Upcoming', ongoing:'Ongoing', finished:'Finished' };
 
-    const adminActions = isAdmin ? `
-      <select onchange="changeStatus('${t.id}', this.value)" style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);padding:0.25rem 0.5rem;font-size:0.78rem;font-family:'Exo 2',sans-serif;">
+    // ── Admin controls in header
+    const adminHeader = isAdmin ? `
+      <select onchange="changeStatus('${t.id}',this.value)"
+        style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);padding:0.25rem 0.5rem;font-size:0.78rem;font-family:'Exo 2',sans-serif;">
         <option value="upcoming" ${t.status==='upcoming'?'selected':''}>Upcoming</option>
         <option value="ongoing"  ${t.status==='ongoing' ?'selected':''}>Ongoing</option>
         <option value="finished" ${t.status==='finished'?'selected':''}>Finished</option>
@@ -385,284 +430,342 @@
       <button class="btn-danger" style="padding:0.25rem 0.65rem;font-size:0.72rem;" onclick="deleteTournament('${t.id}')">Delete</button>
     ` : '';
 
+    // ── LIVE bar (shown when ongoing)
+    const liveBar = isLive ? `
+      <div class="t-live-bar">
+        <div class="t-live-item">
+          <span class="t-live-label">Tournament Time</span>
+          <span class="t-live-timer" id="timer-${t.id}">0m 0s</span>
+        </div>
+        ${t.current_match ? `
+        <div class="t-live-item">
+          <span class="t-live-label">Current Match</span>
+          <span class="t-live-value">${esc(t.current_match)}</span>
+        </div>` : ''}
+        <div class="t-live-item">
+          <span class="t-live-label">Players</span>
+          <span class="t-live-value">${players.length}</span>
+        </div>
+      </div>
+    ` : '';
+
+    // ── Admin: set current match input (only when live)
+    const matchAdmin = (isAdmin && isLive) ? `
+      <div class="t-match-admin">
+        <input type="text" id="match-input-${t.id}"
+          placeholder='Current match, e.g. "RayX2 vs Shinibi_ — Semi-final"'
+          value="${esc(t.current_match || '')}"
+          onkeydown="if(event.key==='Enter') setCurrentMatch('${t.id}')" />
+        <button class="btn-primary" style="padding:0.4rem 0.9rem;white-space:nowrap;" onclick="setCurrentMatch('${t.id}')">Set</button>
+      </div>
+    ` : '';
+
+    // ── Players panel
     const playersPanel = isAdmin ? `
       <div class="t-players-panel">
         <div class="t-players-header">
           <span class="t-players-title">Players (${players.length})</span>
         </div>
         <div class="t-add-row">
-          <input type="text" id="add-input-${t.id}" placeholder="Add player username..." onkeydown="if(event.key==='Enter') addPlayer('${t.id}')" />
+          <input type="text" id="add-input-${t.id}" placeholder="Add player username..."
+            onkeydown="if(event.key==='Enter') addPlayer('${t.id}')" />
           <button class="btn-primary" style="padding:0.45rem 1rem;white-space:nowrap;" onclick="addPlayer('${t.id}')">Add</button>
         </div>
         <div class="t-players-list" id="chips-${t.id}">
-          ${players.map(p => playerChip(t.id, p)).join('')}
-          ${players.length === 0 ? '<span style="color:var(--text-muted);font-size:0.82rem;">No players yet.</span>' : ''}
+          ${players.length
+            ? players.map(p => `<span class="t-player-chip">${esc(p)}<button class="rm" onclick="removePlayer('${t.id}','${esc(p)}')">✕</button></span>`).join('')
+            : '<span style="color:var(--text-muted);font-size:0.82rem;">No players yet.</span>'}
         </div>
       </div>
     ` : `
       <div class="t-players-panel">
-        <div class="t-players-header">
-          <span class="t-players-title">Players (${players.length})</span>
-        </div>
+        <div class="t-players-header"><span class="t-players-title">Players (${players.length})</span></div>
         <div class="t-players-list">
-          ${players.map(p => `<span class="t-player-chip">${esc(p)}</span>`).join('')}
-          ${players.length === 0 ? '<span style="color:var(--text-muted);font-size:0.82rem;">No players registered yet.</span>' : ''}
+          ${players.length
+            ? players.map(p => `<span class="t-player-chip">${esc(p)}</span>`).join('')
+            : '<span style="color:var(--text-muted);font-size:0.82rem;">No players registered.</span>'}
         </div>
       </div>
     `;
 
-    const bracketHtml = bracket.length > 0 ? `
-      <div class="t-bracket-toggle-bar">
-        <button class="t-bracket-toggle" onclick="toggleBracket(this)">▼ View Bracket</button>
-      </div>
-      <div class="t-bracket-wrap">
-        <div class="t-bracket-inner">
-          ${bracket.map((round, ri) => `
-            <div class="b-round">
-              <div class="b-round-label">${roundNames[ri] || 'Round ' + (ri+1)}</div>
-              <div class="b-matches">
-                ${round.map(m => renderMatch(m)).join('')}
-              </div>
-            </div>`).join('')}
+    // ── Apply section (visible when ongoing, for non-admins)
+    const pendingCount  = apps.filter(a=>a.status==='pending').length;
+    const approvedCount = apps.filter(a=>a.status==='approved').length;
+
+    const applySection = (isLive && !isAdmin) ? `
+      <div class="t-apply-section">
+        <h4>🎮 Request to Join</h4>
+        <div class="apply-success show" id="apply-ok-${t.id}" style="display:none;">
+          ✓ Your application was submitted! The admin will review it shortly.
+        </div>
+        <div id="apply-form-${t.id}">
+          <div class="apply-form-grid">
+            <div class="form-group">
+              <label>Discord Username</label>
+              <input type="text" id="discord-${t.id}" placeholder="yourname#0000 or @yourname" />
+            </div>
+            <div class="form-group">
+              <label>Minecraft IGN</label>
+              <input type="text" id="ign-${t.id}" placeholder="YourIGN" />
+            </div>
+          </div>
+          <button class="btn-primary" onclick="applyToTournament('${t.id}')">Submit Application</button>
+          <p class="apply-count">${approvedCount} approved · ${pendingCount} pending review</p>
         </div>
       </div>
     ` : '';
 
+    // ── Admin applications panel (visible when ongoing)
+    const appsPanel = (isAdmin && isLive) ? `
+      <div class="t-applications-panel">
+        <h4>Applications (${apps.length})</h4>
+        ${apps.length === 0
+          ? '<p style="color:var(--text-muted);font-size:0.85rem;">No applications yet.</p>'
+          : apps.map(a => `
+            <div class="app-row">
+              <div class="app-info">
+                <span class="app-ign">${esc(a.ign)}</span>
+                <span class="app-discord">Discord: ${esc(a.discord_nick)}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:0.6rem;">
+                <span class="app-status app-${a.status}">${a.status}</span>
+                ${a.status === 'pending' ? `
+                  <div class="app-actions">
+                    <button class="btn-primary" style="padding:0.25rem 0.65rem;font-size:0.72rem;" onclick="reviewApp('${t.id}','${esc(a.ign)}','approved')">✓ Approve</button>
+                    <button class="btn-danger"  style="padding:0.25rem 0.65rem;font-size:0.72rem;" onclick="reviewApp('${t.id}','${esc(a.ign)}','rejected')">✕ Reject</button>
+                  </div>` : ''}
+              </div>
+            </div>`).join('')
+        }
+      </div>
+    ` : '';
+
+    // ── Bracket (always visible when ongoing or finished; toggle when upcoming)
+    const bracketHtml = bracket.length > 0 ? `
+      <div class="t-bracket-inner">
+        ${bracket.map((round, ri) => `
+          <div class="b-round">
+            <div class="b-round-label">${roundNames[ri] || 'Round '+(ri+1)}</div>
+            <div class="b-matches">
+              ${round.map(m => {
+                const isCurrent = t.current_match && (
+                  t.current_match.toLowerCase().includes((m.p1||'').toLowerCase()) ||
+                  t.current_match.toLowerCase().includes((m.p2||'').toLowerCase())
+                ) && !m.bye;
+                return `
+                  <div class="b-match ${isCurrent ? 'current-match' : ''}">
+                    <div class="b-player ${m.p1==='BYE'?'bye':''} ${m.winner===m.p1&&!m.bye?'winner':''}">
+                      <span>${m.p1==='BYE'?'BYE':m.p1==='TBD'?'?':esc(m.p1)}</span>
+                      ${m.bye&&m.winner===m.p1?'<span class="b-bye-label">AUTO</span>':''}
+                    </div>
+                    <div class="b-player ${m.p2==='BYE'?'bye':''} ${m.winner===m.p2&&!m.bye?'winner':''}">
+                      <span>${m.p2==='BYE'?'BYE':m.p2==='TBD'?'?':esc(m.p2)}</span>
+                      ${m.bye&&m.winner===m.p2?'<span class="b-bye-label">AUTO</span>':''}
+                    </div>
+                  </div>`;
+              }).join('')}
+            </div>
+          </div>`).join('')}
+      </div>
+    ` : '<p style="color:var(--text-muted);font-size:0.85rem;">Bracket will appear once players are added.</p>';
+
+    const bracketSection = isLive || isFinished ? `
+      <div class="t-bracket-wrap open" style="padding:1.25rem 1.5rem 1.5rem;border-top:1px solid var(--border);overflow-x:auto;">
+        <div style="font-family:'Rajdhani',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.75rem;">Bracket</div>
+        <div class="t-bracket-inner">${bracketHtml}</div>
+      </div>
+    ` : `
+      <div class="t-bracket-toggle-bar">
+        <button class="t-bracket-toggle" onclick="toggleBracket(this)">▼ View Bracket</button>
+      </div>
+      <div class="t-bracket-wrap">
+        <div class="t-bracket-inner">${bracketHtml}</div>
+      </div>
+    `;
+
     return `
-      <div class="t-card" id="tcard-${t.id}" style="animation:fadeSlideUp 0.4s ease ${i*0.06}s both;">
+      <div class="t-card ${isLive?'is-live':''}" id="tcard-${t.id}" style="animation:fadeSlideUp 0.4s ease ${i*0.06}s both;">
         <div class="t-card-header">
-          <h3>${esc(t.name)}</h3>
+          <h3>
+            ${esc(t.name)}
+            ${isLive ? '<span class="live-badge"><span class="live-dot"></span>LIVE</span>' : ''}
+          </h3>
           <div class="t-card-actions">
-            <span class="t-status ${statusClass[t.status]||'s-upcoming'}">${statusLabel[t.status]||t.status}</span>
-            ${adminActions}
+            <span class="t-status ${statusMap[t.status]||'s-upcoming'}">${statusLabel[t.status]||t.status}</span>
+            ${adminHeader}
           </div>
         </div>
+        ${liveBar}
+        ${matchAdmin}
         <div class="t-card-meta">
-          <div class="t-meta-item">
-            <span class="t-meta-label">Mode</span>
-            <span class="t-meta-value">${esc((t.mode||'').toUpperCase())}</span>
-          </div>
-          <div class="t-meta-item">
-            <span class="t-meta-label">Date</span>
-            <span class="t-meta-value">${dateStr}</span>
-          </div>
-          <div class="t-meta-item">
-            <span class="t-meta-label">Players</span>
-            <span class="t-meta-value">${players.length}</span>
-          </div>
-          ${t.description ? `
-          <div class="t-meta-item" style="flex:1;min-width:180px;">
-            <span class="t-meta-label">Info</span>
-            <span class="t-meta-value" style="font-weight:400;color:var(--text-secondary);font-size:0.85rem;">${esc(t.description)}</span>
-          </div>` : ''}
+          <div class="t-meta-item"><span class="t-meta-label">Mode</span><span class="t-meta-value">${esc((t.mode||'').toUpperCase())}</span></div>
+          <div class="t-meta-item"><span class="t-meta-label">Date</span><span class="t-meta-value">${dateStr}</span></div>
+          <div class="t-meta-item"><span class="t-meta-label">Players</span><span class="t-meta-value">${players.length}</span></div>
+          ${t.description?`<div class="t-meta-item" style="flex:1;min-width:180px;"><span class="t-meta-label">Info</span><span class="t-meta-value" style="font-weight:400;color:var(--text-secondary);font-size:0.85rem;">${esc(t.description)}</span></div>`:''}
         </div>
         ${playersPanel}
-        ${bracketHtml}
+        ${applySection}
+        ${appsPanel}
+        ${bracketSection}
       </div>`;
   }
 
-  function playerChip(tid, username) {
-    return `
-      <span class="t-player-chip">
-        ${esc(username)}
-        <button class="remove-btn" title="Remove" onclick="removePlayer('${tid}','${esc(username)}')">✕</button>
-      </span>`;
-  }
-
-  // ── Render one bracket match ────────────────────────────
-  function renderMatch(m) {
-    const isBye = m.bye;
-    return `
-      <div class="b-match ${isBye ? 'bye-match' : ''}">
-        <div class="b-player ${m.p1 === 'BYE' ? 'bye' : ''} ${m.winner === m.p1 && !isBye ? 'winner' : ''}">
-          <span>${m.p1 === 'BYE' ? 'BYE' : m.p1 === 'TBD' ? '?' : esc(m.p1)}</span>
-          ${isBye && m.winner === m.p1 ? '<span class="b-bye-label">AUTO</span>' : ''}
-        </div>
-        <div class="b-player ${m.p2 === 'BYE' ? 'bye' : ''} ${m.winner === m.p2 && !isBye ? 'winner' : ''}">
-          <span>${m.p2 === 'BYE' ? 'BYE' : m.p2 === 'TBD' ? '?' : esc(m.p2)}</span>
-          ${isBye && m.winner === m.p2 ? '<span class="b-bye-label">AUTO</span>' : ''}
-        </div>
-      </div>`;
-  }
-
-  // ── Round names based on total rounds ──────────────────
   function getRoundNames(total) {
-    if (total === 1) return ['Final'];
-    if (total === 2) return ['Semi-finals', 'Final'];
-    if (total === 3) return ['Quarter-finals', 'Semi-finals', 'Final'];
-    if (total === 4) return ['Round of 16', 'Quarter-finals', 'Semi-finals', 'Final'];
-    const names = [];
-    for (let i = 0; i < total - 3; i++) names.push(`Round ${i+1}`);
-    return [...names, 'Quarter-finals', 'Semi-finals', 'Final'];
+    if (total===1) return ['Final'];
+    if (total===2) return ['Semi-finals','Final'];
+    if (total===3) return ['Quarter-finals','Semi-finals','Final'];
+    if (total===4) return ['Round of 16','Quarter-finals','Semi-finals','Final'];
+    const n=[];for(let i=0;i<total-3;i++)n.push('Round '+(i+1));
+    return [...n,'Quarter-finals','Semi-finals','Final'];
   }
 
-  // ── Bracket builder (client-side mirror of server) ─────
   function buildBracketClient(players) {
-    const n = players.length;
-    if (n < 2) return [];
-
-    let slots = 1;
-    while (slots < n) slots *= 2;
-
-    const seeded = [...players];
-    while (seeded.length < slots) seeded.push('BYE');
-
-    const rounds = [];
-    let current  = seeded;
-
-    while (current.length > 1) {
-      const matches   = [];
-      const nextRound = [];
-      for (let i = 0; i < current.length; i += 2) {
-        const p1 = current[i], p2 = current[i+1];
-        if (p2 === 'BYE') {
-          matches.push({ p1, p2:'BYE', winner:p1, bye:true });
-          nextRound.push(p1);
-        } else if (p1 === 'BYE') {
-          matches.push({ p1:'BYE', p2, winner:p2, bye:true });
-          nextRound.push(p2);
-        } else {
-          matches.push({ p1, p2, winner:null, bye:false });
-          nextRound.push('TBD');
-        }
+    const n=players.length; if(n<2) return [];
+    let slots=1; while(slots<n) slots*=2;
+    const seeded=[...players]; while(seeded.length<slots) seeded.push('BYE');
+    const rounds=[]; let current=seeded;
+    while(current.length>1){
+      const matches=[],next=[];
+      for(let i=0;i<current.length;i+=2){
+        const p1=current[i],p2=current[i+1];
+        if(p2==='BYE'){matches.push({p1,p2:'BYE',winner:p1,bye:true});next.push(p1);}
+        else if(p1==='BYE'){matches.push({p1:'BYE',p2,winner:p2,bye:true});next.push(p2);}
+        else{matches.push({p1,p2,winner:null,bye:false});next.push('TBD');}
       }
-      rounds.push(matches);
-      current = nextRound;
+      rounds.push(matches); current=next;
     }
     return rounds;
   }
 
-  // ── Toggle bracket ─────────────────────────────────────
   function toggleBracket(btn) {
-    const wrap = btn.closest('.t-card').querySelector('.t-bracket-wrap');
-    const open = wrap.classList.toggle('open');
-    btn.textContent = open ? '▲ Hide Bracket' : '▼ View Bracket';
+    const wrap=btn.closest('.t-card').querySelector('.t-bracket-wrap');
+    const open=wrap.classList.toggle('open');
+    btn.textContent=open?'▲ Hide Bracket':'▼ View Bracket';
   }
 
-  // ── Add player ─────────────────────────────────────────
+  // ── Add player (admin) ─────────────────────────────────
   async function addPlayer(tid) {
-    const input    = document.getElementById(`add-input-${tid}`);
-    const username = input.value.trim();
-    if (!username) return;
-
-    input.disabled = true;
+    const input=document.getElementById(`add-input-${tid}`);
+    const username=input.value.trim(); if(!username) return;
+    input.disabled=true;
     try {
-      const res = await apiFetch(`/tournaments/${tid}/players/add`, {
-        method: 'PATCH',
-        body: JSON.stringify({ username })
-      });
-      // Update local data
-      const t = allTournaments.find(x => x.id === tid);
-      if (t) { t.players = res.players; t.bracket = res.bracket; }
-      input.value = '';
-      refreshCard(tid);
-      toast.success(`${username} added!`);
-    } catch(e) {
-      toast.error(e.message || 'Could not add player');
-    } finally {
-      input.disabled = false;
-      input.focus();
-    }
+      const res=await apiFetch(`/tournaments/${tid}/players/add`,{method:'PATCH',body:JSON.stringify({username})});
+      const t=allTournaments.find(x=>x.id===tid);
+      if(t){t.players=res.players;t.bracket=res.bracket;}
+      input.value=''; refreshCard(tid); toast.success(`${username} added!`);
+    } catch(e){ toast.error(e.message||'Could not add player'); }
+    finally{ input.disabled=false; input.focus(); }
   }
 
-  // ── Remove player ──────────────────────────────────────
-  async function removePlayer(tid, username) {
+  // ── Remove player (admin) ──────────────────────────────
+  async function removePlayer(tid,username) {
     try {
-      const res = await apiFetch(`/tournaments/${tid}/players/remove`, {
-        method: 'PATCH',
-        body: JSON.stringify({ username })
-      });
-      const t = allTournaments.find(x => x.id === tid);
-      if (t) { t.players = res.players; t.bracket = res.bracket; }
-      refreshCard(tid);
-      toast.info(`${username} removed.`);
-    } catch(e) {
-      toast.error(e.message || 'Could not remove player');
-    }
+      const res=await apiFetch(`/tournaments/${tid}/players/remove`,{method:'PATCH',body:JSON.stringify({username})});
+      const t=allTournaments.find(x=>x.id===tid);
+      if(t){t.players=res.players;t.bracket=res.bracket;}
+      refreshCard(tid); toast.info(`${username} removed.`);
+    } catch(e){ toast.error(e.message||'Could not remove'); }
   }
 
-  // ── Change status ──────────────────────────────────────
-  async function changeStatus(tid, status) {
+  // ── Set current match (admin) ──────────────────────────
+  async function setCurrentMatch(tid) {
+    const val=document.getElementById(`match-input-${tid}`).value.trim();
     try {
-      await apiFetch(`/tournaments/${tid}/status`, {
-        method: 'PATCH',
-        body: JSON.stringify({ status })
-      });
-      const t = allTournaments.find(x => x.id === tid);
-      if (t) t.status = status;
-      refreshCard(tid);
-      toast.success('Status updated!');
-    } catch(e) {
-      toast.error(e.message || 'Could not update status');
-    }
+      await apiFetch(`/tournaments/${tid}/current-match`,{method:'PATCH',body:JSON.stringify({current_match:val})});
+      const t=allTournaments.find(x=>x.id===tid);
+      if(t) t.current_match=val;
+      refreshCard(tid); toast.success('Current match updated!');
+    } catch(e){ toast.error(e.message||'Could not update match'); }
   }
 
-  // ── Delete ─────────────────────────────────────────────
+  // ── Change status (admin) ──────────────────────────────
+  async function changeStatus(tid,status) {
+    try {
+      await apiFetch(`/tournaments/${tid}/status`,{method:'PATCH',body:JSON.stringify({status})});
+      const t=allTournaments.find(x=>x.id===tid);
+      if(t){ t.status=status; if(status==='ongoing') t.started_at=new Date().toISOString(); }
+      refreshCard(tid); toast.success('Status updated!');
+    } catch(e){ toast.error(e.message||'Could not update status'); }
+  }
+
+  // ── Delete (admin) ─────────────────────────────────────
   async function deleteTournament(tid) {
-    if (!confirm('Delete this tournament?')) return;
+    if(!confirm('Delete this tournament?')) return;
     try {
-      await apiFetch(`/tournaments/${tid}`, { method: 'DELETE' });
-      allTournaments = allTournaments.filter(t => t.id !== tid);
-      renderList();
-      toast.success('Tournament deleted.');
-    } catch(e) {
-      toast.error(e.message || 'Could not delete');
-    }
+      await apiFetch(`/tournaments/${tid}`,{method:'DELETE'});
+      allTournaments=allTournaments.filter(t=>t.id!==tid);
+      renderList(); toast.success('Deleted.');
+    } catch(e){ toast.error(e.message||'Could not delete'); }
   }
 
-  // ── Refresh a single card in-place ────────────────────
-  function refreshCard(tid) {
-    const t   = allTournaments.find(x => x.id === tid);
-    const el  = document.getElementById(`tcard-${tid}`);
-    const idx = allTournaments.indexOf(t);
-    if (!t || !el) { renderList(); return; }
-    el.outerHTML = renderCard(t, idx);
+  // ── Apply to tournament (public) ───────────────────────
+  async function applyToTournament(tid) {
+    const discord=document.getElementById(`discord-${tid}`).value.trim();
+    const ign=document.getElementById(`ign-${tid}`).value.trim();
+    if(!discord||!ign){ toast.error('Fill in both fields.'); return; }
+    try {
+      await apiFetch(`/tournaments/${tid}/apply`,{method:'POST',body:JSON.stringify({discord_nick:discord,ign})});
+      document.getElementById(`apply-form-${tid}`).style.display='none';
+      const ok=document.getElementById(`apply-ok-${tid}`);
+      ok.style.display='block'; ok.classList.add('show');
+      toast.success('Application submitted!');
+    } catch(e){ toast.error(e.message||'Could not submit application'); }
+  }
+
+  // ── Review application (admin) ─────────────────────────
+  async function reviewApp(tid,ign,status) {
+    try {
+      await apiFetch(`/tournaments/${tid}/applications/${encodeURIComponent(ign)}`,{method:'PATCH',body:JSON.stringify({status})});
+      const t=allTournaments.find(x=>x.id===tid);
+      if(t&&t.applications){
+        t.applications=t.applications.map(a=>a.ign.toLowerCase()===ign.toLowerCase()?{...a,status}:a);
+      }
+      refreshCard(tid); toast.success(`${ign} ${status}!`);
+    } catch(e){ toast.error(e.message||'Could not review'); }
   }
 
   // ── Create tournament ──────────────────────────────────
   async function createTournament() {
-    const name   = document.getElementById('t-name').value.trim();
-    const mode   = document.getElementById('t-mode').value;
-    const date   = document.getElementById('t-date').value;
-    const status = document.getElementById('t-status').value;
-    const desc   = document.getElementById('t-desc').value.trim();
-    const errEl  = document.getElementById('create-error');
-
+    const name=document.getElementById('t-name').value.trim();
+    const mode=document.getElementById('t-mode').value;
+    const date=document.getElementById('t-date').value;
+    const status=document.getElementById('t-status').value;
+    const desc=document.getElementById('t-desc').value.trim();
+    const errEl=document.getElementById('create-error');
     errEl.classList.remove('show');
-    if (!name) { errEl.textContent = 'Name is required.'; errEl.classList.add('show'); return; }
-
-    const btn = document.getElementById('create-btn');
-    btn.disabled = true;
-    btn.innerHTML = 'Creating… <span class="spinner"></span>';
-
+    if(!name){errEl.textContent='Name is required.';errEl.classList.add('show');return;}
+    const btn=document.getElementById('create-btn');
+    btn.disabled=true; btn.innerHTML='Creating… <span class="spinner"></span>';
     try {
-      const res = await apiFetch('/tournaments', {
-        method: 'POST',
-        body: JSON.stringify({ name, mode, date, status, description: desc, players: [] })
-      });
+      const res=await apiFetch('/tournaments',{method:'POST',body:JSON.stringify({name,mode,date,status,description:desc,players:[]})});
       allTournaments.unshift(res.tournament);
       toggleForm(false);
-      ['t-name','t-desc'].forEach(id => document.getElementById(id).value = '');
-      renderList();
-      toast.success(`"${name}" created!`);
-    } catch(e) {
-      errEl.textContent = e.message || 'Failed to create tournament.';
-      errEl.classList.add('show');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Create Tournament';
-    }
+      ['t-name','t-desc'].forEach(id=>document.getElementById(id).value='');
+      renderList(); toast.success(`"${name}" created!`);
+    } catch(e){
+      errEl.textContent=e.message||'Failed.'; errEl.classList.add('show');
+    } finally{ btn.disabled=false; btn.textContent='Create Tournament'; }
+  }
+
+  // ── Refresh a single card in-place ─────────────────────
+  function refreshCard(tid) {
+    if(timers[tid]){ clearInterval(timers[tid]); delete timers[tid]; }
+    const t=allTournaments.find(x=>x.id===tid);
+    const el=document.getElementById(`tcard-${tid}`);
+    const idx=allTournaments.indexOf(t);
+    if(!t||!el){renderList();return;}
+    el.outerHTML=renderCard(t,idx);
+    if(t.status==='ongoing'&&t.started_at) startTimer(t);
   }
 
   // ── Demo data ──────────────────────────────────────────
   function demoData() {
-    const p8 = ['RayX2','Shinibi_','misterrxx','Maze','loafxxl','bracedsubset740','ProKnight2014','MillyOnSnuffy'];
-    const p3 = ['RayX2','Shinibi_','misterrxx'];
-    const p2 = ['RayX2','Shinibi_'];
+    const p8=['RayX2','Shinibi_','misterrxx','Maze','loafxxl','bracedsubset740','ProKnight2014','MillyOnSnuffy'];
+    const p3=['RayX2','Shinibi_','misterrxx'];
     return [
-      { id:'d1', name:'GT Sword Open #1', mode:'sword', date: new Date(Date.now()+7*864e5).toISOString(), status:'upcoming', description:'Open for all tiers. Sign up on Discord!', players: p8, bracket: buildBracketClient(p8) },
-      { id:'d2', name:'GT Crystal Invitational', mode:'crystal', date: new Date(Date.now()-2*864e5).toISOString(), status:'ongoing', description:'3-player round — one gets a bye.', players: p3, bracket: buildBracketClient(p3) },
-      { id:'d3', name:'GT 1v1 Final', mode:'uhc', date: new Date(Date.now()-14*864e5).toISOString(), status:'finished', description:'Quick 2-player final.', players: p2, bracket: buildBracketClient(p2) },
+      {id:'d1',name:'GT Sword Open #1',mode:'sword',date:new Date(Date.now()+7*864e5).toISOString(),status:'upcoming',description:'Open for all tiers.',players:p8,bracket:buildBracketClient(p8),applications:[]},
+      {id:'d2',name:'GT Crystal Invitational',mode:'crystal',date:new Date(Date.now()-2*864e5).toISOString(),status:'ongoing',started_at:new Date(Date.now()-3600000).toISOString(),description:'3-player round.',players:p3,bracket:buildBracketClient(p3),current_match:'RayX2 vs Shinibi_ — Semi-final',applications:[{discord_nick:'testuser#1234',ign:'TestPlayer',status:'pending',applied_at:new Date().toISOString()}]},
+      {id:'d3',name:'GT UHC Season 1',mode:'uhc',date:new Date(Date.now()-14*864e5).toISOString(),status:'finished',description:'Concluded.',players:['RayX2','Shinibi_'],bracket:buildBracketClient(['RayX2','Shinibi_']),applications:[]},
     ];
   }
 </script>
