@@ -5,6 +5,343 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Player — Gauntlet Tiers</title>
   <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    /* ── HERO BANNER ── */
+    .player-hero {
+      position: relative;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2rem 2.5rem;
+      overflow: hidden;
+    }
+
+    .player-hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 50% 80% at 10% 50%, rgba(212,160,23,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .player-hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .player-hero-inner {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      animation: fadeSlideUp 0.5s ease 0.05s both;
+    }
+
+    /* ── SKIN ── */
+    .skin-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .skin-frame {
+      width: 96px;
+      height: 96px;
+      border-radius: 10px;
+      border: 2px solid var(--accent-gold);
+      overflow: hidden;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      image-rendering: pixelated;
+    }
+
+    .skin-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      image-rendering: pixelated;
+      display: block;
+    }
+
+    .skin-initials {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+
+    /* ── PLAYER INFO ── */
+    .player-hero-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .player-hero-breadcrumb {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .player-hero-breadcrumb a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .player-hero-breadcrumb a:hover { color: var(--accent-gold); }
+
+    .player-hero-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .best-tier-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── MAIN CONTENT ── */
+    .player-body {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    /* ── MODES GRID ── */
+    .modes-section {
+      animation: fadeSlideUp 0.5s ease 0.1s both;
+    }
+
+    .section-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .modes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .mode-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.1rem 0.9rem;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .mode-card.ranked {
+      border-color: rgba(212,160,23,0.2);
+    }
+
+    .mode-card.ranked:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(212,160,23,0.4);
+    }
+
+    .mode-card-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .mode-card-tier {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .mode-card-sublabel {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .mode-card-unranked {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      padding: 0.2rem 0;
+    }
+
+    /* ── HISTORY ── */
+    .history-section-new {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      animation: fadeSlideUp 0.5s ease 0.2s both;
+    }
+
+    .history-header {
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .history-header h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .history-empty {
+      padding: 2rem 1.25rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .history-row {
+      display: grid;
+      grid-template-columns: 80px 1fr auto auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+
+    .history-row:last-child { border-bottom: none; }
+    .history-row:hover { background: var(--bg-card-hover); }
+
+    .history-row-mode {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .history-row-change {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .history-row-arrow {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    .history-row-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* ── NOT FOUND ── */
+    .not-found-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 2rem;
+      text-align: center;
+    }
+
+    .not-found-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.4;
+    }
+
+    .not-found-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .not-found-sub {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--accent-gold); }
+
+    @media (max-width: 600px) {
+      .player-hero-inner { flex-direction: column; text-align: center; }
+      .player-hero-meta { justify-content: center; }
+      .modes-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+      .history-row { grid-template-columns: 60px 1fr; }
+      .history-row-date { display: none; }
+    }
+  </style>
 </head>
 <body>
 
@@ -29,58 +366,80 @@
 </nav>
 
 <main>
-  <!-- Not found state -->
-  <div id="not-found" style="display:none;text-align:center;padding:6rem 2rem;">
-    <p style="font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:2px;color:var(--text-muted);">Player not found</p>
-    <p style="color:var(--text-muted);font-size:0.9rem;margin:0.75rem 0 2rem;">This player has not been ranked yet.</p>
-    <a href="tierlist.html" class="btn-large primary">Back to Rankings</a>
+
+  <!-- ── NOT FOUND ── -->
+  <div id="not-found" style="display:none;">
+    <div class="not-found-page">
+      <div class="not-found-icon">⚔️</div>
+      <p class="not-found-title">Player Not Found</p>
+      <p class="not-found-sub">This player has not been ranked yet or does not exist.</p>
+      <a href="tierlist.html" class="btn-large primary">Back to Rankings</a>
+    </div>
   </div>
 
-  <!-- Player content -->
-  <div id="player-content">
-    <div class="page-header">
-      <p style="font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">
-        <a href="tierlist.html" style="color:var(--text-muted);text-decoration:none;">Rankings</a>
-        <span style="margin:0 0.5rem;">›</span>
-        <span id="breadcrumb-name">...</span>
-      </p>
-      <h1 id="page-title">...</h1>
+  <!-- ── PLAYER CONTENT ── -->
+  <div id="player-content" style="display:none;">
+
+    <!-- Hero banner -->
+    <div class="player-hero">
+      <div class="player-hero-bg"></div>
+      <div class="player-hero-grid"></div>
+      <div class="player-hero-inner">
+
+        <!-- Skin -->
+        <div class="skin-wrapper">
+          <div class="skin-frame" id="skin-frame">
+            <span class="skin-initials" id="skin-initials">??</span>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="player-hero-info">
+          <div class="player-hero-breadcrumb">
+            <a href="tierlist.html">Rankings</a>
+            <span style="margin:0 0.4rem;">›</span>
+            <span id="breadcrumb-name"></span>
+          </div>
+          <div class="player-hero-name" id="player-username">—</div>
+          <div class="player-hero-meta">
+            <span id="player-region"></span>
+            <span class="best-tier-label" id="best-tier-label"></span>
+            <span id="player-best-tier"></span>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <div class="player-public-page">
+    <!-- Body -->
+    <div class="player-body">
 
-      <!-- Header with skin -->
-      <div class="player-public-header">
-        <div id="skin-container">
-          <div style="width:80px;height:80px;border-radius:8px;background:var(--bg-secondary);border:2px solid var(--border);"></div>
-        </div>
-        <div class="player-public-info">
-          <h1 id="player-username">Loading...</h1>
-          <p id="player-region"></p>
-          <p id="player-best-tier" style="margin-top:0.5rem;"></p>
+      <!-- Back link -->
+      <div>
+        <a href="tierlist.html" class="back-link">← Back to Rankings</a>
+      </div>
+
+      <!-- Modes -->
+      <div class="modes-section">
+        <div class="section-label">Tiers by Game Mode</div>
+        <div class="modes-grid" id="modes-grid">
+          <!-- filled by JS -->
         </div>
       </div>
 
-      <!-- Tiers grid -->
-      <div style="font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-secondary);margin-bottom:1rem;">
-        Tiers by Game Mode
-      </div>
-      <div class="player-public-tiers" id="player-tiers"></div>
-
-      <!-- Tier history -->
-      <div class="history-section" id="history-section">
-        <h3>Tier History</h3>
+      <!-- History -->
+      <div class="history-section-new">
+        <div class="history-header">
+          <h3>Tier History</h3>
+        </div>
         <div id="history-list">
-          <p style="color:var(--text-muted);font-size:0.88rem;">No history yet.</p>
+          <div class="history-empty">Loading history...</div>
         </div>
-      </div>
-
-      <div style="margin-top:1.5rem;">
-        <a href="tierlist.html" class="btn-ghost">← Back to Rankings</a>
       </div>
 
     </div>
   </div>
+
 </main>
 
 <footer>
@@ -110,42 +469,72 @@
     return d.innerHTML;
   }
 
-  async function loadPlayer() {
-    const params = new URLSearchParams(window.location.search);
-    const username = params.get('user');
+  function setSkin(username) {
+    const frame  = document.getElementById('skin-frame');
+    const initials = username.slice(0, 2).toUpperCase();
 
-    if (!username) {
-      showNotFound();
-      return;
+    // Try multiple skin APIs in order
+    const apis = [
+      `https://mineskin.eu/helm/${encodeURIComponent(username)}/96`,
+      `https://mc-heads.net/avatar/${encodeURIComponent(username)}/96`,
+      `https://crafatar.com/avatars/${encodeURIComponent(username)}?size=96&overlay`,
+    ];
+
+    let apiIndex = 0;
+
+    function tryNext() {
+      if (apiIndex >= apis.length) {
+        // All failed — show initials
+        frame.innerHTML = `<span class="skin-initials">${initials}</span>`;
+        return;
+      }
+      const img = new Image();
+      img.onload = () => {
+        frame.innerHTML = '';
+        frame.appendChild(img);
+      };
+      img.onerror = () => {
+        apiIndex++;
+        tryNext();
+      };
+      img.src = apis[apiIndex];
+      img.alt = username;
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'cover';
+      img.style.imageRendering = 'pixelated';
+      apiIndex++;
     }
 
-    // Set page title
+    tryNext();
+  }
+
+  async function loadPlayer() {
+    const params   = new URLSearchParams(window.location.search);
+    const username = params.get('user');
+
+    if (!username) { showNotFound(); return; }
+
     document.title = `${username} — Gauntlet Tiers`;
     document.getElementById('breadcrumb-name').textContent = username;
-    document.getElementById('page-title').textContent = username;
-
-    // Load skin
-    const skinContainer = document.getElementById('skin-container');
-    skinContainer.innerHTML = `
-      <img class="mc-skin-lg"
-        src="https://mineskin.eu/helm/${encodeURIComponent(username)}/80"
-        alt="${esc(username)}"
-        onerror="this.outerHTML='<div style=\'width:80px;height:80px;border-radius:8px;background:rgba(212,160,23,0.15);border:2px solid var(--accent-gold);display:flex;align-items:center;justify-content:center;font-family:Rajdhani,sans-serif;font-size:1.8rem;font-weight:700;color:var(--accent-gold);\'>${esc(username.slice(0,2).toUpperCase())}</div>'"
-      />`;
-
     document.getElementById('player-username').textContent = username;
+    document.getElementById('skin-initials').textContent   = username.slice(0,2).toUpperCase();
 
-    // Fetch all modes in parallel
+    // Show content skeleton while loading
+    document.getElementById('player-content').style.display = 'block';
+
+    setSkin(username);
+
     try {
       const results = await Promise.all(
         MODES.map(m => getPlayers(m).catch(() => ({ players: [] })))
       );
 
-      const tiers = {};
-      let region = null;
+      const tiers  = {};
+      let region   = null;
 
       results.forEach((res, i) => {
-        const m = MODES[i];
+        const m     = MODES[i];
         const match = (res.players || res).find(
           p => p.username.toLowerCase() === username.toLowerCase()
         );
@@ -160,7 +549,7 @@
         return;
       }
 
-      // Region
+      // Region badge
       if (region) {
         document.getElementById('player-region').innerHTML =
           `<span class="region-badge">${esc(region)}</span>`;
@@ -172,22 +561,28 @@
         const best = ranked.reduce((a, b) =>
           TIERS_ORDER.indexOf(a) <= TIERS_ORDER.indexOf(b) ? a : b
         );
+        document.getElementById('best-tier-label').textContent = 'Best:';
         document.getElementById('player-best-tier').innerHTML =
-          `Best tier: <span class="tier-badge tier-${best}" style="font-size:0.85rem;">${best} — ${TIER_LABELS[best]}</span>`;
+          `<span class="tier-badge tier-${best}">${best} — ${TIER_LABELS[best]}</span>`;
       }
 
-      // Tiers grid
-      document.getElementById('player-tiers').innerHTML = MODES.map(mode => `
-        <div class="profile-tier-card" style="animation:fadeSlideUp 0.45s ease ${0.1 + MODES.indexOf(mode) * 0.06}s both;">
-          <div class="profile-tier-mode">${mode.toUpperCase()}</div>
-          ${tiers[mode]
-            ? `<span class="tier-badge tier-${tiers[mode]}">${tiers[mode]}</span>
-               <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">${TIER_LABELS[tiers[mode]]}</div>`
-            : `<span style="color:var(--text-muted);font-size:0.82rem;">Unranked</span>`
-          }
-        </div>`).join('');
+      // Modes grid
+      document.getElementById('modes-grid').innerHTML = MODES.map((mode, idx) => {
+        const tier = tiers[mode];
+        return `
+          <div class="mode-card ${tier ? 'ranked' : ''}"
+               style="animation:fadeSlideUp 0.4s ease ${0.12 + idx * 0.05}s both;">
+            <div class="mode-card-name">${mode}</div>
+            <div class="mode-card-tier">
+              ${tier
+                ? `<span class="tier-badge tier-${tier}" style="font-size:0.78rem;">${tier}</span>
+                   <span class="mode-card-sublabel">${TIER_LABELS[tier]}</span>`
+                : `<span class="mode-card-unranked">—</span>`
+              }
+            </div>
+          </div>`;
+      }).join('');
 
-      // Tier history (from backend if available)
       loadHistory(username);
 
     } catch(e) {
@@ -198,30 +593,35 @@
   async function loadHistory(username) {
     const listEl = document.getElementById('history-list');
     try {
-      const data = await apiFetch(`/players/history?username=${encodeURIComponent(username)}`);
+      const data    = await apiFetch(`/players/history?username=${encodeURIComponent(username)}`);
       const history = data.history || [];
 
       if (!history.length) {
-        listEl.innerHTML = `<p style="color:var(--text-muted);font-size:0.88rem;">No history recorded yet.</p>`;
+        listEl.innerHTML = `<div class="history-empty">No tier changes recorded yet.</div>`;
         return;
       }
 
       listEl.innerHTML = history.map(h => `
-        <div class="history-item">
-          <span class="history-mode">${esc(h.mode)}</span>
-          <span class="tier-badge tier-${h.old_tier}" style="font-size:0.75rem;">${esc(h.old_tier)}</span>
-          <span class="history-arrow">→</span>
-          <span class="tier-badge tier-${h.new_tier}" style="font-size:0.75rem;">${esc(h.new_tier)}</span>
-          <span class="history-date">${new Date(h.changed_at).toLocaleDateString('en-US', { day:'numeric', month:'short', year:'numeric' })}</span>
+        <div class="history-row">
+          <span class="history-row-mode">${esc(h.mode)}</span>
+          <div class="history-row-change">
+            <span class="tier-badge tier-${h.old_tier}" style="font-size:0.72rem;">${esc(h.old_tier)}</span>
+            <span class="history-row-arrow">→</span>
+            <span class="tier-badge tier-${h.new_tier}" style="font-size:0.72rem;">${esc(h.new_tier)}</span>
+          </div>
+          <span class="history-row-date">
+            ${new Date(h.changed_at).toLocaleDateString('en-US',
+              { day:'numeric', month:'short', year:'numeric' })}
+          </span>
         </div>`).join('');
     } catch(e) {
-      listEl.innerHTML = `<p style="color:var(--text-muted);font-size:0.88rem;">No history recorded yet.</p>`;
+      listEl.innerHTML = `<div class="history-empty">No tier changes recorded yet.</div>`;
     }
   }
 
   function showNotFound() {
     document.getElementById('player-content').style.display = 'none';
-    document.getElementById('not-found').style.display = 'block';
+    document.getElementById('not-found').style.display     = 'block';
   }
 
   loadPlayer();
